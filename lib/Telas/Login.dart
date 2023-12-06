@@ -1,9 +1,9 @@
+import 'package:projeto_coleta_seletiva/Cadastro/TelaCadastro.dart';
 import 'package:projeto_coleta_seletiva/Controller/LoginController.dart';
 import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Telas/Menu.dart';
-//import 'package:projeto_coleta_seletiva/Telas/Cadastrar.dart';
 
 import 'package:flutter/material.dart';
 
@@ -92,16 +92,16 @@ class Login extends StatelessWidget {
               //container para colocar botao em "Cadastrar-se"
               height: 40,
               alignment: Alignment.center,
-              //child: TextButton(
-              child: Text('Cadastre-se', textAlign: TextAlign.center),
-              /* onPressed: () {
+              child: TextButton(
+                child: Text('Cadastre-se', textAlign: TextAlign.center),
+                onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Cadastrar()),
+                    MaterialPageRoute(builder: (context) => TelaCadastro()),
                   );
-                },*/
+                },
+              ),
             ),
-            //),
           ],
         ),
       ),

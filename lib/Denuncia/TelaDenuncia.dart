@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/Denuncia/CepInputFormatter.dart';
+import 'package:projeto_coleta_seletiva/InputFormatter/CepInputFormatter.dart';
 import 'package:projeto_coleta_seletiva/Interfaces/DenunciaDAO.dart';
+import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
@@ -19,10 +20,6 @@ class TelaDenuncia extends StatefulWidget {
 }
 
 class _TelaDenunciaState extends State<TelaDenuncia> {
-  // Cria uma instância da implementação da interface DenunciaDAO
-  //TODO: REMOVER COMENTARIO
-  //final DenunciaDAO denunciaDAO = DenunciaDAOImpl();
-
   final Usuario usuario;
   TipoDenuncia _selectedTipoDenuncia = TipoDenuncia.DescarteIrregular;
   String descricaoDenuncia = "";
@@ -147,7 +144,6 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
 
               //Definir ENDEREÇO denuncia
               //BAIRRO
-
               TextField(
                 onChanged: (text) {
                   endereco.bairro = text;
@@ -215,12 +211,7 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                 onChanged: (text) {
                   text = text.replaceAll(' ', ''); //Remover espaços em branco
 
-                  if (text.length > 5) {
-                    text = "${text.substring(0, 5)}-${text.substring(5)}";
-                  }
-
                   endereco.cep = text;
-                  print(endereco.cep);
                 },
                 keyboardType: TextInputType.number,
                 inputFormatters: [
@@ -247,9 +238,12 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.map),
+                    icon: const Icon(
+                      Icons.map,
+                      color: Colors.green,
+                    ),
                     onPressed: () {
-                      // Adicione a lógica que você deseja executar ao clicar no ícone
+                      popUpGoogleMaps();
                     },
                   ),
                 ],
@@ -260,10 +254,10 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    _salvarDenuncia(usuario);
+                    _vericarInput(usuario);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
+                    backgroundColor: Colors.green,
                   ),
                   child: const Text(
                     'ENVIAR',
@@ -283,28 +277,74 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
     );
   }
 
-  void _salvarDenuncia(Usuario usuario) {
+  void _vericarInput(Usuario usuario) {
     //Verificar se o input ta correto
     //Verifico se tem o bairro e rua, se tiver cep verifica se ta formatado correto
     if (descricaoDenuncia.isEmpty ||
         endereco.bairro.isEmpty ||
         endereco.rua.isEmpty ||
         (endereco.cep.isNotEmpty && endereco.cep.length < 8)) {
-      popUp();
+      popUpErro();
 
       return;
     }
 
-    //TODO: REMOVER COMENTARIO
-    //Criar instâncias de Denuncia e obter os dados do Usuario
-    //Denuncia denuncia = Denuncia.denunciaSemId(_selectedTipoDenuncia, descricaoDenuncia, endereco, DateTime.now());
+    _salvarDenuncia(usuario);
+  }
 
+  void _salvarDenuncia(Usuario usuario) {
+    //Criar uma instância de DenunciaDAOImpl
+    DenunciaDAOImpl denunciaDAO = DenunciaDAOImpl();
+
+    //Criar instancia de denuncia
+    Denuncia denuncia = Denuncia(
+      _selectedTipoDenuncia,
+      descricaoDenuncia,
+      1, // Id da denúncia
+      DateTime.now(),
+      bairro: endereco.bairro,
+      cep: endereco.cep,
+      rua: endereco.rua,
+      numero: endereco.numero.toString(),
+    );
+
+    //TODO: Remover comentario quando estiver funcionando a adição de denuncia
     //Chamar o método salvarDenuncia da instância de DenunciaDAO
     //denunciaDAO.salvarDenuncia(denuncia, usuario);
     Navigator.pop(context);
   }
 
-  Future popUp() => showDialog(
+  Future popUpGoogleMaps() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.green,
+          title: const Text(
+            "MAPS",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: const Text(
+            "Por falta de verba a funcionalidade de localização usando Google Maps ainda não foi implementada.",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              child: const Text(
+                "OK",
+                style:
+                    TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
+      );
+
+  Future popUpErro() => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: Colors.green,
