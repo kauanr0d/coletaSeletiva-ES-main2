@@ -1,4 +1,4 @@
-import 'package:projeto_coleta_seletiva/Cadastro/TelaCadastro.dart';
+import 'package:projeto_coleta_seletiva/Telas/Cadastro/TelaCadastro.dart';
 import 'package:projeto_coleta_seletiva/Controller/LoginController.dart';
 import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';

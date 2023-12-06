@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Telas/Home.dart';
 import 'package:projeto_coleta_seletiva/Telas/Login.dart';
 

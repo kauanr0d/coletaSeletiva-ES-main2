@@ -50,7 +50,7 @@ class Denuncia {
     };
   }
 
-  factory Denuncia.fromMap(Map<String, dynamic> map) {
+/*  factory Denuncia.fromMap(Map<String, dynamic> map) {
     return Denuncia(
       TipoDenuncia.values.firstWhere(
         (e) => e.toString() == 'TipoDenuncia.' + map['tipoDenuncia'],
@@ -64,22 +64,33 @@ class Denuncia {
       rua: map['rua'],
       numero: map['numero'],
     );
+  }*/
+
+  factory Denuncia.fromMap(Map<String, dynamic> map) {
+    return Denuncia(
+      _getTipoDenunciaFromString(map['tipoDenuncia']),
+      map['descricaoDenuncia'],
+      map['idDenuncia'],
+      DateTime.tryParse(map['dataDenuncia']),
+      bairro: map['bairro'],
+      cep: map['cep'],
+      rua: map['rua'],
+      numero: map['numero'],
+    );
   }
 
-  TipoDenuncia getTipoDenunciaFromString(String? valor) {
+  static TipoDenuncia _getTipoDenunciaFromString(String? valor) {
     if (valor == null) {
       return TipoDenuncia.outros;
     }
 
     switch (valor) {
-      case 'Descarte Irregular':
+      case 'DescarteIrregular':
         return TipoDenuncia.DescarteIrregular;
-      case 'Falta De Coleta':
+      case 'FaltaDeColeta':
         return TipoDenuncia.FaltaDeColeta;
-      case 'Obstrucao De Patrimonio':
+      case 'ObstrucaoDePatrimonio':
         return TipoDenuncia.ObstrucaoDePatrimonio;
-      case 'outros':
-        return TipoDenuncia.outros;
       default:
         return TipoDenuncia.outros;
     }

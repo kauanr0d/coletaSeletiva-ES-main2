@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_coleta_seletiva/ChatBot/TesteRasaService.dart';
-import 'package:projeto_coleta_seletiva/ChatBot/AjusteTelaChat.dart'; // Importa o widget ChatMessage() -- ajusta as mensagens da tela
+import 'package:projeto_coleta_seletiva/Telas/ChatBot/TesteRasaService.dart';
+import 'package:projeto_coleta_seletiva/Telas/ChatBot/AjusteTelaChat.dart'; // Importa o widget ChatMessage() -- ajusta as mensagens da tela
 
 //classe principal do chat(FAZ A CONEXAO COM O CLOUD E TEM A ESTRUTURA BASICA DA TELA)
 class ChatBot extends StatefulWidget {
