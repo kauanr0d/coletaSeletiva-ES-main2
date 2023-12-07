@@ -6,6 +6,7 @@ enum TipoDenuncia {
 }
 
 extension TipoDenunciaExtension on TipoDenuncia {
+  //método para resolver o problema de exibição do tipo de denúncia
   String toCustomString() {
     switch (this) {
       case TipoDenuncia.DescarteIrregular:
