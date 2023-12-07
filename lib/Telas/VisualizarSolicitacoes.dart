@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
+import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
+import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
+import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 
 class VisualizarSolicitacoes extends StatefulWidget {
+  final Usuario usuario;
+  VisualizarSolicitacoes({Key? key, required this.usuario});
   @override
-  _VisualizarSolicitacoesState createState() => _VisualizarSolicitacoesState();
+  State<VisualizarSolicitacoes> createState() =>
+      _VisualizarSolicitacoesState(usuario: usuario);
 }
 
 class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoes> {
+  List<Denuncia> denuncias = [];
+  final Usuario usuario;
+
+  _VisualizarSolicitacoesState({required this.usuario});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,8 +53,17 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoes> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  // Lógica do primeiro botão
+                onPressed: () async {
+                  DenunciaDAOImpl denunciaDAOImpl = DenunciaDAOImpl();
+                  List<Denuncia> listaDenuncias =
+                      await denunciaDAOImpl.listarDenuncias(usuario);
+                  Denuncia d = listaDenuncias.first;
+                  //ignore: avoid_print
+                  print("${d.tipoDenuncia}, Descrição: ${d.descricaoDenuncia}");
+
+                  setState(() {
+                    denuncias = listaDenuncias;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.green, // Cor do botão
@@ -54,6 +75,8 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoes> {
                   ),
                 ),
               ),
+              ListaDenunciasWidget(denuncias: denuncias), ////aq
+
               SizedBox(height: 16), // Espaçamento entre os botões
               ElevatedButton(
                 onPressed: () {
@@ -73,6 +96,34 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoes> {
           ),
         ),
         // Outros widgets vão aqui
+      ),
+    );
+  }
+}
+
+class ListaDenunciasWidget extends StatelessWidget {
+  final List<Denuncia> denuncias;
+
+  ListaDenunciasWidget({required this.denuncias});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200, // Defina a altura conforme necessário
+      child: ListView.builder(
+        itemCount: denuncias.length,
+        itemBuilder: (context, index) {
+          Denuncia denuncia = denuncias[index];
+
+          return Card(
+            // Customize the appearance of each card as needed
+            child: ListTile(
+              title: Text('Tipo: ${denuncia.tipoDenuncia?.toCustomString()}'),
+              subtitle: Text('Descrição: ${denuncia.descricaoDenuncia}'),
+              // Add more information as needed
+            ),
+          );
+        },
       ),
     );
   }

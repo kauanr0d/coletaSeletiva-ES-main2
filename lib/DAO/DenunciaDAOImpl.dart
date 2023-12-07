@@ -48,21 +48,23 @@ class DenunciaDAOImpl implements DenunciaDAO {
       denuncia.numero,
       denuncia.dataDenuncia?.toLocal().toString()
     ]);
-    _db!.close();
     throw UnimplementedError();
   }
 
   @override
   Future<List<Denuncia>> listarDenuncias(Usuario usuario) async {
-    _db = await Conexao.getConexao();
-    var sql = "SELECT * FROM denuncia WHERE id_usuario = ? ";
-    List<Map<String, dynamic>> result =
-        await _db!.rawQuery(sql, [usuario.idUsuario]);
+    try {
+      _db = await Conexao.getConexao();
+      var sql = "SELECT * FROM denuncia WHERE id_usuario = ? ";
+      List<Map<String, dynamic>> result =
+          await _db!.rawQuery(sql, [usuario.idUsuario]);
 
-    List<Denuncia> denuncias =
-        result.map((map) => Denuncia.fromMap(map)).toList();
-
-    _db!.close();
-    return denuncias;
+      List<Denuncia> denuncias =
+          result.map((map) => Denuncia.fromMap(map)).toList();
+      return denuncias;
+    } catch (e) {
+      print("Erro ao listar denúncias: $e");
+      return []; // Retorna uma lista vazia em caso de erro
+    }
   }
 }

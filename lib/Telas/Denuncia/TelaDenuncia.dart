@@ -300,7 +300,7 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
     Denuncia denuncia = Denuncia(
       _selectedTipoDenuncia,
       descricaoDenuncia,
-      1, // Id da denúncia
+      0, // Id da denúncia
       DateTime.now(),
       bairro: endereco.bairro,
       cep: endereco.cep,
@@ -310,7 +310,7 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
 
     //TODO: Remover comentario quando estiver funcionando a adição de denuncia
     //Chamar o método salvarDenuncia da instância de DenunciaDAO
-    //denunciaDAO.salvarDenuncia(denuncia, usuario);
+    denunciaDAO.salvarDenuncia(denuncia, usuario);
     Navigator.pop(context);
   }
 

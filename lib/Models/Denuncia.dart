@@ -50,49 +50,29 @@ class Denuncia {
     };
   }
 
-/*  factory Denuncia.fromMap(Map<String, dynamic> map) {
-    return Denuncia(
-      TipoDenuncia.values.firstWhere(
-        (e) => e.toString() == 'TipoDenuncia.' + map['tipoDenuncia'],
-        orElse: () => TipoDenuncia.outros,
-      ),
-      map['descricaoDenuncia'],
-      map['idDenuncia'],
-      DateTime.tryParse(map['dataDenuncia']),
-      bairro: map['bairro'],
-      cep: map['cep'],
-      rua: map['rua'],
-      numero: map['numero'],
-    );
-  }*/
+  Denuncia.fromMap(Map<String, dynamic> map)
+      : _idDenuncia = map['id_denuncia'],
+        _tipoDenuncia = _getTipoDenunciaFromString(map['tipo_denuncia']),
+        _descricaoDenuncia = map['descricao'],
+        _cep = map['CEP'],
+        _bairro = map['bairro'],
+        _rua = map['rua'],
+        _numero = map['numero'],
+        _dataDenuncia = DateTime.parse(map['data_denuncia']);
 
-  factory Denuncia.fromMap(Map<String, dynamic> map) {
-    return Denuncia(
-      _getTipoDenunciaFromString(map['tipoDenuncia']),
-      map['descricaoDenuncia'],
-      map['idDenuncia'],
-      DateTime.tryParse(map['dataDenuncia']),
-      bairro: map['bairro'],
-      cep: map['cep'],
-      rua: map['rua'],
-      numero: map['numero'],
-    );
-  }
+  // ... (restante do código)
 
   static TipoDenuncia _getTipoDenunciaFromString(String? valor) {
     if (valor == null) {
       return TipoDenuncia.outros;
     }
 
-    switch (valor) {
-      case 'DescarteIrregular':
-        return TipoDenuncia.DescarteIrregular;
-      case 'FaltaDeColeta':
-        return TipoDenuncia.FaltaDeColeta;
-      case 'ObstrucaoDePatrimonio':
-        return TipoDenuncia.ObstrucaoDePatrimonio;
-      default:
-        return TipoDenuncia.outros;
+    for (TipoDenuncia tipo in TipoDenuncia.values) {
+      if (tipo.toString().split('.').last == valor) {
+        return tipo;
+      }
     }
+
+    return TipoDenuncia.outros;
   }
 }
