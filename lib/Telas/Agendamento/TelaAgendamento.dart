@@ -22,8 +22,8 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   _TelaAgendamentoState({required this.usuario});
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _descricaoController = TextEditingController();
-  DateTime? _selectedDate;
+  TextEditingController _descricao = TextEditingController();
+  DateTime? _selecaoData;
   List<TipoAgendamento> _selecaoTiposAgendamento = [];
 
   @override
@@ -56,8 +56,6 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 16),
-
-                  // Adicione a imagem centralizada aqui
                   Center(
                     child: Container(
                       width: 200,
@@ -72,7 +70,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                             offset: Offset(0, 3),
                           ),
                         ],
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           image: AssetImage('assets/seletinhoHomePage.png'),
                           fit: BoxFit.cover,
                         ),
@@ -82,9 +80,9 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
                   const SizedBox(height: 16),
 
-                  // Adiciona o campo de descrição
+                  // Descricao do Agendamento
                   TextFormField(
-                    controller: _descricaoController,
+                    controller: _descricao,
                     decoration: InputDecoration(
                       labelText: 'Descrição do Agendamento',
                       border: OutlineInputBorder(
@@ -101,6 +99,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     },
                   ),
 
+                  //Data de Coleta
                   const SizedBox(height: 16),
 
                   GestureDetector(
@@ -128,15 +127,16 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                             'Data de Coleta: ',
                             style: TextStyle(fontSize: 16),
                           ),
-                          if (_selectedDate != null)
+                          if (_selecaoData != null)
                             Text(
-                              '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
+                              '${_selecaoData!.day}/${_selecaoData!.month}/${_selecaoData!.year}',
                             ),
                         ],
                       ),
                     ),
                   ),
-
+                  
+                  //Tipos De Residuos
                   const SizedBox(height: 16),
                   Container(
                     decoration: BoxDecoration(
@@ -184,7 +184,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Adicione o bloco para exibir os resíduos selecionados de maneira bonita
+                  // Exibir os resíduos selecionados 
                   Container(
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 228, 233, 228),
@@ -248,7 +248,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        _submeterFormulario();
+                        _salvarFormulario();
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -280,14 +280,14 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
-    if (pickedDate != null && pickedDate != _selectedDate) {
+    if (pickedDate != null && pickedDate != _selecaoData) {
       setState(() {
-        _selectedDate = pickedDate;
+        _selecaoData = pickedDate;
       });
     }
   }
 
-  void _submeterFormulario() {
+  void _salvarFormulario() {
     if (_selecaoTiposAgendamento.isNotEmpty) {
        /*TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
       final agendamento = Agendamento(
