@@ -1,45 +1,49 @@
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
 
-class Agendamento{
-  TipoAgendamento _tipoAgendamento;
-  String _descricaoAgendamento;
-  int _idAgendamento;
-  DateTime _dataAgendamento;
+class Agendamento {
+  TipoAgendamento? _tipoAgendamento;
+  String? _descricaoAgendamento;
+  int? _idAgendamento;
+  DateTime? _dataAgendamento;
 
-  Agendamento(this._tipoAgendamento, this._descricaoAgendamento, this._idAgendamento,this._dataAgendamento);
+  Agendamento(this._tipoAgendamento, this._descricaoAgendamento,
+      this._idAgendamento, this._dataAgendamento);
 
-  Agendamento.semID(TipoAgendamento tipoAgendamento, String descricaoAgendamento,DateTime dataAgendamento)
-    :_tipoAgendamento = tipoAgendamento,
-      _dataAgendamento = dataAgendamento,
-      _idAgendamento = 0,
-      _descricaoAgendamento = descricaoAgendamento;
- 
-  int get idAgendamento => _idAgendamento;
+  //getters
+  TipoAgendamento? get tipoAgendamento => _tipoAgendamento;
+  String? get descricaoAgendamento => _descricaoAgendamento;
+  int? get idAgendamento => _idAgendamento;
+  DateTime? get dataAgendamento => _dataAgendamento;
 
-  set idAgendamento(int value) {
-    _idAgendamento = value;
+  Map<String, dynamic> toMap() {
+    return {
+      'idAgendament0': _idAgendamento,
+      'tipoAgendamentp':
+          _tipoAgendamento?.toString(), // Converte o enum para uma string
+      'descricaoAgendamentp': _descricaoAgendamento,
+      'dataAgendamento': _dataAgendamento
+          ?.toIso8601String(), // Converte a data para uma string no formato ISO 8601
+    };
   }
 
-  String get descricaoAgendamento => _descricaoAgendamento;
+  Agendamento.fromMap(Map<String, dynamic> map)
+      : _idAgendamento = map['id_agendamento'],
+        _tipoAgendamento = _getTipoAgendamentoFromString(map['tipo_denuncia']),
+        _descricaoAgendamento = map['descricao'],
+        _dataAgendamento = DateTime.parse(map['data_agendamento']);
 
-  set descricaoAgendamento(String value) {
-    _descricaoAgendamento = value;
-  }
+  static TipoAgendamento _getTipoAgendamentoFromString(String? valor) {
+    if (valor == null) {
+      return TipoAgendamento.outros;
+    }
 
-  TipoAgendamento get tipoAgendamento => _tipoAgendamento;
+    for (TipoAgendamento tipo in TipoAgendamento.values) {
+      if (tipo.toString().split('.').last == valor) {
+        return tipo;
+      }
+    }
 
-  set tipoAgendamento(TipoAgendamento value) {
-    _tipoAgendamento = value;
-  }
-
-  String dataFormatadaSQL() {
-    String ano, mes, dia;
-    ano = _dataAgendamento.year.toString();
-    mes = _dataAgendamento.month.toString();
-    dia = _dataAgendamento.day.toString();
-
-    String dataFormatada = '$ano-$mes-$dia';
-    return dataFormatada;
+    return TipoAgendamento.outros;
   }
 }

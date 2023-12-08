@@ -17,7 +17,10 @@ class ListaDenunciasWidget extends StatelessWidget {
         itemCount: denuncias.length,
         itemBuilder: (context, index) {
           Denuncia denuncia = denuncias[index];
-
+          //ignore: avoid_print
+          print(denuncia.idDenuncia);
+          //ignore: avoid_print
+          print(denuncia.descricaoDenuncia);
           return Card(
             child: ListTile(
               title: Text('Tipo: ${denuncia.tipoDenuncia?.toCustomString()}'),

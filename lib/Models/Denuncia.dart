@@ -60,8 +60,6 @@ class Denuncia {
         _numero = map['numero'],
         _dataDenuncia = DateTime.parse(map['data_denuncia']);
 
-  // ... (restante do código)
-
   static TipoDenuncia _getTipoDenunciaFromString(String? valor) {
     if (valor == null) {
       return TipoDenuncia.outros;

@@ -36,8 +36,8 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
         "INSERT INTO agendamento (id_usuario,id_tipo_agendamento,data_agendamento,descricao) values(?,?,?,?)";
     await _db!.rawInsert(sql, [
       usuario.idUsuario,
+      agendamento.tipoAgendamento?.name.toString(),
       agendamento.tipoAgendamento,
-      agendamento.dataFormatadaSQL(),
       agendamento.descricaoAgendamento
     ]);
     _db!.close();

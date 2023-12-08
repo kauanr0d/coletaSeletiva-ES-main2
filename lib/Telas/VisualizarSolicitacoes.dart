@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/Telas/listaDenuncias.dart'; // Ajuste aqui
+import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
+import 'package:projeto_coleta_seletiva/Telas/HistoricoDenuncias.dart';
 
-class VisualizarSolicitacoes extends StatefulWidget {
+class VisualizarSolicitacoesTest extends StatefulWidget {
   final Usuario usuario;
-  VisualizarSolicitacoes({Key? key, required this.usuario});
+  VisualizarSolicitacoesTest({Key? key, required this.usuario});
   @override
-  State<VisualizarSolicitacoes> createState() =>
+  State<VisualizarSolicitacoesTest> createState() =>
       _VisualizarSolicitacoesState(usuario: usuario);
 }
 
-class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoes> {
+class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
   List<Denuncia> denuncias = [];
   final Usuario usuario;
 
@@ -57,28 +58,58 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoes> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ListaDenunciasWidget(
-                        denuncias: denuncias,
-                        usuario: usuario,
-                      ),
+                      builder: (context) =>
+                          HistoricoDenuncias(usuario: usuario),
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // Cor do botão
-                ),
+                style: ElevatedButton.styleFrom(primary: Colors.green),
                 child: Text(
-                  'Histórico de Denúncias',
+                  'VISUALIZAR DENÚNCIAS',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                  ),
+                ),
+              ),
+              /* ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                        //  FAZER INSTANCIA PRA IR PRA PAG DE AGENDAMENTOS,
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(primary: Colors.green),
+                child: Text(
+                  'VISUALIZAR AGENDAMENTOS',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                  ),
+                ),
+              ),
+             */
+              SizedBox(height: 16), // Espaçamento entre os botões
+              ElevatedButton(
+                onPressed: () {
+                  // Lógica do segundo botão
+                },
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.green // Cor do botão
+                    ),
+                child: Text(
+                  'Cancelar Solicitação',
                   style: TextStyle(
                     color: Colors.white, // Cor do texto
                   ),
                 ),
               ),
-              SizedBox(height: 16),
             ],
           ),
         ),
-        // Outros widgets vão aqui
       ),
     );
   }

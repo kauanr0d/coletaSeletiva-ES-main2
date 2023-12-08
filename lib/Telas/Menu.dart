@@ -73,7 +73,7 @@ class _MenuState extends State<Menu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        VisualizarSolicitacoes(usuario: usuario),
+                        VisualizarSolicitacoesTest(usuario: usuario),
                   ),
                 );
               },

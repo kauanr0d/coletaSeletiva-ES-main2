@@ -10,18 +10,8 @@ class LoginController {
   Future<Usuario?> realizarLogin(String email, String senha) async {
     try {
       Usuario? usuario = await usuarioDAO.login(email, senha);
-      Denuncia denuncia = Denuncia(
-        TipoDenuncia.DescarteIrregular,
-        "Aqui na rua",
-        null,
-        DateTime.now(),
-        bairro: "Nome do Bairro555",
-        cep: "12345-678",
-        rua: "Nome da Rua123",
-        numero: "12345",
-      );
+
       DenunciaDAOImpl denunciaDAOImpl = DenunciaDAOImpl();
-      denunciaDAOImpl.salvarDenuncia(denuncia, usuario!);
 
       return usuario;
     } catch (e) {
