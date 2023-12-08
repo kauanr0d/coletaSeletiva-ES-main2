@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:projeto_coleta_seletiva/InputFormatter/CepInputFormatter.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/DAO/AgendamentoDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Interfaces/AgendamentoDAO.dart';
 import 'package:projeto_coleta_seletiva/Models/Agendamento.dart';
-import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 
 class TelaAgendamento extends StatefulWidget {
   final Usuario usuario;
@@ -14,7 +11,8 @@ class TelaAgendamento extends StatefulWidget {
   TelaAgendamento({Key? key, required this.usuario}) : super(key: key);
 
   @override
-  State<TelaAgendamento> createState() => _TelaAgendamentoState(usuario: usuario);
+  State<TelaAgendamento> createState() =>
+      _TelaAgendamentoState(usuario: usuario);
 }
 
 class _TelaAgendamentoState extends State<TelaAgendamento> {
@@ -24,10 +22,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   _TelaAgendamentoState({required this.usuario});
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _bairro = TextEditingController();
-  TextEditingController _rua = TextEditingController();
-  TextEditingController _numero = TextEditingController();
-  TextEditingController _cep = TextEditingController();
+  TextEditingController _descricaoController = TextEditingController();
   DateTime? _selectedDate;
   List<TipoAgendamento> _selecaoTiposAgendamento = [];
 
@@ -39,10 +34,11 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
           title: const Center(
             child: Text(
               'Agendamento',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,),
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
-          backgroundColor: Colors.green, centerTitle: true,
+          backgroundColor: Colors.green,
+          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             color: Colors.white,
@@ -60,85 +56,53 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _bairro,
-                    decoration: const InputDecoration(
-                      labelText: 'Bairro',
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira o bairro';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _rua,
-                    decoration: const InputDecoration(
-                      labelText: 'Rua',
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira a rua';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    controller: _numero,
-                    decoration: const InputDecoration(
-                      labelText: 'Número (Opcional)',
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 16),
-TextFormField(
-                    controller: _cep,
-                    onChanged: (text) {
-                      text = text.replaceAll(RegExp(r'[^\d]'),
-                          ''); // Remover caracteres não numéricos
 
-                      if (text.length > 5 && text.substring(5, 6) != '-') {
-                        text = "${text.substring(0, 5)}-${text.substring(5)}";
-                      }
-
-                      _cep.value = _cep.value.copyWith(
-                        text: text,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(offset: text.length),
+                  // Adicione a imagem centralizada aqui
+                  Center(
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                        image: DecorationImage(
+                          image: AssetImage('assets/seletinhoHomePage.png'),
+                          fit: BoxFit.cover,
                         ),
-                      );
-                    },
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(8),
-                      CepInputFormatter(), // Formatter customizado para formatar o CEP
-                    ],
-                    decoration: const InputDecoration(
-                      labelText: 'CEP (Opcional)',
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
                       ),
                     ),
-                    style: const TextStyle(fontSize: 18.0),
                   ),
+
                   const SizedBox(height: 16),
+
+                  // Adiciona o campo de descrição
+                  TextFormField(
+                    controller: _descricaoController,
+                    decoration: InputDecoration(
+                      labelText: 'Descrição do Agendamento',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira uma descrição';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
                   GestureDetector(
                     onTap: () {
                       _selecionarData(context);
@@ -147,13 +111,13 @@ TextFormField(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(255, 228, 233, 228),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
+                            color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
                           ),
                         ],
                       ),
@@ -167,23 +131,23 @@ TextFormField(
                           if (_selectedDate != null)
                             Text(
                               '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
-                              //style: TextStyle(fontSize: 16),
                             ),
                         ],
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 16),
                   Container(
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 228, 233, 228),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
@@ -219,13 +183,67 @@ TextFormField(
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'Resíduos Selecionados: ${_selecaoTiposAgendamento.map((tipo) => tipo.toString().split('.').last).join(', ')}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+
+                  // Adicione o bloco para exibir os resíduos selecionados de maneira bonita
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 228, 233, 228),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Resíduos Selecionados',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          height: 40,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _selecaoTiposAgendamento.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    _selecaoTiposAgendamento[index]
+                                        .toString()
+                                        .split('.')
+                                        .last,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
+
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
@@ -235,16 +253,16 @@ TextFormField(
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
-                      minimumSize: const Size(double.infinity, 40), // Ajusta o tamanho do botão
+                      minimumSize: const Size(double.infinity, 40),
                     ),
                     child: const Text(
                       'Agendar Coleta',
                       style: TextStyle(
-                        color: Colors.white, 
+                        color: Colors.white,
                         fontSize: 16,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -270,21 +288,13 @@ TextFormField(
   }
 
   void _submeterFormulario() {
-    final endereco = Endereco(
-      _bairro.text,
-      _rua.text,
-      int.tryParse(_numero.text) ?? 0,
-      _cep.text,
-    );
-
     if (_selecaoTiposAgendamento.isNotEmpty) {
-      /*TODO: Corrigir construtor de agendamento, corrigir o codigo e tirar o comentario
+       /*TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
       final agendamento = Agendamento(
         _selecaoTiposAgendamento[0],
-        'Descrição do Agendamento',
+        _descricaoController.text,
         0,
         DateTime.now(),
-        endereco: endereco,
         tiposAgendamento: _selecaoTiposAgendamento,
         usuario: usuario,
         dataAgendamento: _selectedDate,
