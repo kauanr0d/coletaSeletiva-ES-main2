@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_coleta_seletiva/Telas/Agendamento/TelaAgendamento.dart';
 import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Telas/Denuncia/TelaDenuncia.dart';
@@ -33,6 +34,24 @@ class _MenuState extends State<Menu> {
               width: 250,
               height: 250,
               child: Image.asset('assets/seletinhoHomePage.png'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TelaAgendamento(usuario: usuario),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+              child: Text(
+                'AGENDAMENTOS',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
