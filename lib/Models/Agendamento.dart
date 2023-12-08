@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
 
@@ -18,10 +19,10 @@ class Agendamento {
 
   Map<String, dynamic> toMap() {
     return {
-      'idAgendament0': _idAgendamento,
+      'idAgendamento': _idAgendamento,
       'tipoAgendamentp':
           _tipoAgendamento?.toString(), // Converte o enum para uma string
-      'descricaoAgendamentp': _descricaoAgendamento,
+      'descricaoAgendamento': _descricaoAgendamento,
       'dataAgendamento': _dataAgendamento
           ?.toIso8601String(), // Converte a data para uma string no formato ISO 8601
     };
@@ -45,5 +46,13 @@ class Agendamento {
     }
 
     return TipoAgendamento.outros;
+  }
+
+  String dataAgendamentoFormatada() {
+    if (_dataAgendamento != null) {
+      return DateFormat('dd/MM/yyyy').format(_dataAgendamento!);
+    } else {
+      return '';
+    }
   }
 }

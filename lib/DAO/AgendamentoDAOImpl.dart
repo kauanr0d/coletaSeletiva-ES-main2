@@ -33,7 +33,7 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
     var sql;
     _db = await Conexao.getConexao();
     sql =
-        "INSERT INTO agendamento (id_usuario,id_tipo_agendamento,data_agendamento,descricao) values(?,?,?,?)";
+        "INSERT INTO agendamento (id_usuario,tipo_agendamento,data_agendamento,descricao) values(?,?,?,?)";
     await _db!.rawInsert(sql, [
       usuario.idUsuario,
       agendamento.tipoAgendamento?.name.toString(),
@@ -42,5 +42,21 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
     ]);
     _db!.close();
     throw UnimplementedError();
+  }
+
+  Future<List<Agendamento>> listarAgendamentos(Usuario usuario) async {
+    try {
+      _db = await Conexao.getConexao();
+      var sql = "SELECT * FROM agendamento WHERE id_usuario = ? ";
+      List<Map<String, dynamic>> result =
+          await _db!.rawQuery(sql, [usuario.idUsuario]);
+
+      List<Agendamento> agendamentos =
+          result.map((map) => Agendamento.fromMap(map)).toList();
+      return agendamentos;
+    } catch (e) {
+      print("Erro ao listar denúncias: $e");
+      return [];
+    }
   }
 }
