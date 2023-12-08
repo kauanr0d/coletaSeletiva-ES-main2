@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
 
@@ -45,5 +46,13 @@ class Agendamento {
     }
 
     return TipoAgendamento.outros;
+  }
+
+  String dataAgendamentoFormatada() {
+    if (_dataAgendamento != null) {
+      return DateFormat('dd/MM/yyyy').format(_dataAgendamento!);
+    } else {
+      return '';
+    }
   }
 }

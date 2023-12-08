@@ -44,8 +44,7 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
     throw UnimplementedError();
   }
 
-  Future<List<Agendamento>> listarAgendamentos(
-      Agendamento agendamento, Usuario usuario) async {
+  Future<List<Agendamento>> listarAgendamentos(Usuario usuario) async {
     try {
       _db = await Conexao.getConexao();
       var sql = "SELECT * FROM agendamento WHERE id_usuario = ? ";
