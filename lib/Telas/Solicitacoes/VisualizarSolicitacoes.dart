@@ -3,7 +3,7 @@ import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
-import 'package:projeto_coleta_seletiva/Telas/HistoricoDenuncias.dart';
+import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/HistoricoDenuncias.dart';
 
 class VisualizarSolicitacoesTest extends StatefulWidget {
   final Usuario usuario;

@@ -124,7 +124,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoDenuncias> {
                                 style: TextStyle(fontSize: 14),
                               ),
                               Text(
-                                'Data da Denúncia: ${denuncia.dataDenuncia}',
+                                'Data da Denúncia: ${denuncia.dataDenunciaFormatada()}',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],

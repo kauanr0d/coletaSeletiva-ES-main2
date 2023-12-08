@@ -1,6 +1,7 @@
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
+import 'package:intl/intl.dart';
 
 class Denuncia {
   TipoDenuncia? _tipoDenuncia;
@@ -72,5 +73,13 @@ class Denuncia {
     }
 
     return TipoDenuncia.outros;
+  }
+
+  String dataDenunciaFormatada() {
+    if (_dataDenuncia != null) {
+      return DateFormat('dd/MM/yyyy HH:mm').format(_dataDenuncia!);
+    } else {
+      return '';
+    }
   }
 }

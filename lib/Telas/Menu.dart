@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
+import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Telas/Denuncia/TelaDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Telas/Login.dart';
-import 'package:projeto_coleta_seletiva/Telas/VisualizarSolicitacoes.dart';
+import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/VisualizarSolicitacoes.dart';
 import 'package:projeto_coleta_seletiva/Telas/ChatBot/ChatBot.dart';
 
 class Menu extends StatefulWidget {
   final Usuario usuario;
-
   Menu({Key? key, required this.usuario}) : super(key: key);
 
   @override
