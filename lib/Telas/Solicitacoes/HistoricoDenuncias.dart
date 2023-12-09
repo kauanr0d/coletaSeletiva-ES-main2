@@ -52,6 +52,18 @@ class _VisualizarSolicitacoesState extends State<HistoricoDenuncias> {
           ),
           centerTitle: true,
           backgroundColor: Colors.green,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.green,
+                  Color.fromARGB(255, 68, 202, 255),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);

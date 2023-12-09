@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_coleta_seletiva/Models/Agendamento.dart';
+import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/DAO/AgendamentoDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
 
 class HistoricoAgendamento extends StatefulWidget {
   final Usuario usuario;
@@ -23,17 +23,64 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
   @override
   void initState() {
     super.initState();
-    _buscarDenuncias();
+    _buscarAgendamentos();
   }
 
-  Future<void> _buscarDenuncias() async {
+  Future<void> _buscarAgendamentos() async {
     AgendamentoDAOImpl agendamentoDAOImpl = AgendamentoDAOImpl();
-    List<Agendamento> listaAgendamentos = await agendamentoDAOImpl
-        .listarAgendamentos(usuario); //Agendamento.listarDenuncias(usuario);
+    List<Agendamento> listaAgendamentos =
+        await agendamentoDAOImpl.listarAgendamentos(usuario);
 
     setState(() {
       agendamentos = listaAgendamentos;
     });
+  }
+
+  Future<void> _excluirAgendamento(Agendamento agendamento) async {
+    AgendamentoDAOImpl agendamentoDAOImpl = AgendamentoDAOImpl();
+
+    bool confirmarExclusao = await _mostrarDialogoConfirmacao();
+
+    if (confirmarExclusao) {
+      // Exclui o agendamento do banco de dados
+      await agendamentoDAOImpl.remover(agendamento);
+
+      // Atualiza o estado para refletir que a linha seja removida da lista
+      setState(() {
+        agendamentos.remove(agendamento);
+      });
+    }
+  }
+
+  Future<dynamic> _mostrarDialogoConfirmacao() async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Confirmação',
+              style: TextStyle(color: Colors.white, fontSize: 16)),
+          content: Text('Deseja mesmo cancelar o agendamento?',
+              style: TextStyle(color: Colors.white, fontSize: 16)),
+          backgroundColor: Colors.green,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancela a exclusão
+              },
+              child: const Text('Não',
+                  style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirma a exclusão
+              },
+              child: const Text('Sim',
+                  style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -42,7 +89,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Histórico De Agendamentos',
+            'Agendamentos',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -52,6 +99,18 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
           ),
           centerTitle: true,
           backgroundColor: Colors.green,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.green,
+                  Color.fromARGB(255, 68, 202, 255),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -121,13 +180,19 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
                             children: [
                               Text(
                                 'Descrição: ${agendamento.descricaoAgendamento}',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(fontSize: 14),
                               ),
                               Text(
                                 'Data do agendamento: ${agendamento.dataAgendamentoFormatada()}',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(fontSize: 14),
                               ),
                             ],
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _excluirAgendamento(agendamento);
+                            },
                           ),
                         ),
                       );

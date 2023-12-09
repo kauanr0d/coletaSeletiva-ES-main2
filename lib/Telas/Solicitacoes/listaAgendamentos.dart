@@ -21,7 +21,8 @@ class ListaAgendamentosWidget extends StatelessWidget {
             child: ListTile(
               title: Text(
                   'Tipo: ${agendamento.tipoAgendamento?.toCustomString()}'),
-              subtitle: Text('Descrição: ${agendamento.descricaoAgendamento}'),
+              subtitle: Text('Descrição: ${agendamento.descricaoAgendamento}',
+                  style: const TextStyle(fontSize: 14)),
             ),
           );
         },

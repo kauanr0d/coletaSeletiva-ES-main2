@@ -23,8 +23,10 @@ class ListaDenunciasWidget extends StatelessWidget {
           print(denuncia.descricaoDenuncia);
           return Card(
             child: ListTile(
-              title: Text('Tipo: ${denuncia.tipoDenuncia?.toCustomString()}'),
-              subtitle: Text('Descrição: ${denuncia.descricaoDenuncia}'),
+              title: Text('Tipo: ${denuncia.tipoDenuncia?.toCustomString()}',
+                  style: const TextStyle(fontSize: 14)),
+              subtitle: Text('Descrição: ${denuncia.descricaoDenuncia}',
+                  style: const TextStyle(fontSize: 14)),
             ),
           );
         },

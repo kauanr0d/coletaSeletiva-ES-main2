@@ -24,6 +24,40 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
     // Lógica de inicialização aqui, se necessário
   }
 
+  Widget _buildGradientButton(
+      {required String text, required VoidCallback onPressed}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          colors: [
+            Colors.green,
+            Color.fromARGB(255, 68, 202, 255),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent, // Cor de fundo transparente
+          onPrimary: Colors.white, // Cor do texto
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.0,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,6 +74,18 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
           ),
           centerTitle: true,
           backgroundColor: Colors.green,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.green,
+                  Color.fromARGB(255, 68, 202, 255),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
           leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -58,7 +104,8 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
+              _buildGradientButton(
+                text: 'VISUALIZAR DENÚNCIAS',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -68,19 +115,13 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(primary: Colors.green),
-                child: Text(
-                  'VISUALIZAR DENÚNCIAS',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.0,
-                  ),
-                ),
               ),
 
-              ElevatedButton(
+              SizedBox(height: 16), // Espaçamento entre os botões
+
+              _buildGradientButton(
+                text: 'VISUALIZAR AGENDAMENTOS',
                 onPressed: () {
-                  // Substitua 'agendamentos' pela sua lista de agendamentos
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -89,30 +130,8 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(primary: Colors.green),
-                child: Text(
-                  'VISUALIZAR AGENDAMENTOS',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.0,
-                  ),
-                ),
               ),
-              SizedBox(height: 16), // Espaçamento entre os botões
-              ElevatedButton(
-                onPressed: () {
-                  // Lógica do segundo botão
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // Cor do botão
-                ),
-                child: Text(
-                  'Cancelar Solicitação',
-                  style: TextStyle(
-                    color: Colors.white, // Cor do texto
-                  ),
-                ),
-              ),
+              SizedBox(height: 16),
             ],
           ),
         ),

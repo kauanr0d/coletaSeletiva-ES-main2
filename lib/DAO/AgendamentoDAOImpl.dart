@@ -52,7 +52,7 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
           result.map((map) => Agendamento.fromMap(map)).toList();
       return agendamentos;
     } catch (e) {
-      print("Erro ao listar denúncias: $e");
+      print("Erro ao listar agendamentos: $e");
       return [];
     }
   }
