@@ -74,14 +74,10 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       height: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.5),
+                          width: 2,
+                        ),
                         image: const DecorationImage(
                           image: AssetImage('assets/seletinhoHomePage.png'),
                           fit: BoxFit.cover,
@@ -89,7 +85,6 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 16),
 
                   // Descricao do Agendamento
@@ -121,16 +116,12 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 228, 233, 228),
+                        color: Color.fromARGB(255, 255, 255, 255),
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.5),
+                          width: 2,
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,16 +143,12 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   const SizedBox(height: 16),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 228, 233, 228),
+                      color: Color.fromARGB(255, 252, 252, 252),
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 2,
+                      ),
                     ),
                     child: ExpansionTile(
                       title: const Text(
@@ -172,20 +159,20 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       ),
                       children: TipoAgendamento.values
                           .map(
-                            (tipo) => CheckboxListTile(
+                            (tipo) => RadioListTile(
                               title: Text(
                                 tipo.toString().split('.').last,
                                 style: const TextStyle(fontSize: 16),
                               ),
-                              value: _selecaoTiposAgendamento.contains(tipo),
-                              onChanged: (bool? value) {
+                              value: tipo,
+                              groupValue: _selecaoTiposAgendamento.isNotEmpty
+                                  ? _selecaoTiposAgendamento[0]
+                                  : null,
+                              onChanged: (TipoAgendamento? value) {
                                 setState(() {
+                                  _selecaoTiposAgendamento.clear();
                                   if (value != null) {
-                                    if (value) {
-                                      _selecaoTiposAgendamento.add(tipo);
-                                    } else {
-                                      _selecaoTiposAgendamento.remove(tipo);
-                                    }
+                                    _selecaoTiposAgendamento.add(value);
                                   }
                                 });
                               },
@@ -199,29 +186,25 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   // Exibir os resíduos selecionados
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 228, 233, 228),
+                      color: Color.fromARGB(255, 249, 250, 249),
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.5),
+                        width: 2,
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 16),
                         const Text(
-                          'Resíduos Selecionados',
+                          'Resíduo Selecionado: ',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         Container(
                           height: 40,
                           child: ListView.builder(
@@ -243,7 +226,8 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                                         .split('.')
                                         .last,
                                     style: const TextStyle(
-                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -271,7 +255,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   colors: [
                     Colors.green,
                     Color.fromARGB(255, 68, 202, 255),
-                  ], // Cores do gradiente
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -285,11 +269,9 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors
-                        .transparent, //Defina a cor de fundo como transparente
+                    backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          12.0), //Ajuste o raio conforme necessário
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
                   child: const Text(
