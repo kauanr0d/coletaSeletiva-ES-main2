@@ -1,8 +1,5 @@
-import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
-import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
-import 'package:projeto_coleta_seletiva/Models/Agendamento.dart';
+import 'dart:convert';
+import 'dart:math';
 
 class Usuario {
   String? _nome;
