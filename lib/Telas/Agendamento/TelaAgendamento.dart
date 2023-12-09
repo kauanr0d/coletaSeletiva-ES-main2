@@ -324,20 +324,21 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
     }
   }
 
-  void _salvarFormulario() {
+  void _salvarFormulario() async {
     if (_selecaoTiposAgendamento.isNotEmpty) {
-      /*TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
+      //TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
       final agendamento = Agendamento(
         _selecaoTiposAgendamento[0],
-        _descricaoController.text,
+        _descricao.text,
         0,
-        DateTime.now(),
-        tiposAgendamento: _selecaoTiposAgendamento,
-        usuario: usuario,
-        dataAgendamento: _selectedDate,
+        _selecaoData ?? DateTime.now(),
       );
+      //ignore: avoid_print
+      print(agendamento.tipoAgendamento.toString());
+      await agendamentoDAO.salvarAgendamento(agendamento, usuario);
 
-      agendamentoDAO.salvarAgendamento(agendamento, usuario);*/
+      //Navigator.pop(context);
+      // agendamentoDAO.salvarAgendamento(agendamento, usuario);
 
       Navigator.pop(context);
     } else {

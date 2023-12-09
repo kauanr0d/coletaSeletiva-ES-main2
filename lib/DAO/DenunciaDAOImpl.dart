@@ -65,8 +65,7 @@ class DenunciaDAOImpl implements DenunciaDAO {
           result.map((map) => Denuncia.fromMap(map)).toList();
       return denuncias;
     } catch (e) {
-      print("Erro ao listar denúncias: $e");
-      return []; // Retorna uma lista vazia em caso de erro
+      return [];
     }
   }
 }

@@ -30,7 +30,8 @@ class Agendamento {
 
   Agendamento.fromMap(Map<String, dynamic> map)
       : _idAgendamento = map['id_agendamento'],
-        _tipoAgendamento = _getTipoAgendamentoFromString(map['tipo_denuncia']),
+        _tipoAgendamento =
+            _getTipoAgendamentoFromString(map['tipo_agendamento']),
         _descricaoAgendamento = map['descricao'],
         _dataAgendamento = DateTime.parse(map['data_agendamento']);
 

@@ -25,7 +25,6 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
     sql = "DELETE FROM agendamento WHERE id_agendamento = ?";
     await _db!.rawDelete(sql, [agendamento.idAgendamento]);
     _db!.close();
-    throw UnimplementedError();
   }
 
   @override
@@ -37,11 +36,9 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
     await _db!.rawInsert(sql, [
       usuario.idUsuario,
       agendamento.tipoAgendamento?.name.toString(),
-      agendamento.tipoAgendamento,
+      agendamento.dataAgendamento?.toLocal().toString(),
       agendamento.descricaoAgendamento
     ]);
-    _db!.close();
-    throw UnimplementedError();
   }
 
   Future<List<Agendamento>> listarAgendamentos(Usuario usuario) async {

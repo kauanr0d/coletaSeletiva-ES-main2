@@ -42,7 +42,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Histórico De Denúncias',
+            'Histórico De Agendamentos',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -85,7 +85,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Lista de Denúncias',
+                'Lista de Agendamentos',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
               SizedBox(height: 8),
               if (agendamentos.isEmpty)
                 Text(
-                  'Nenhuma denúncia encontrada.',
+                  'Nenhum agendamento encontrado.',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -121,11 +121,11 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
                             children: [
                               Text(
                                 'Descrição: ${agendamento.descricaoAgendamento}',
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'Data da Denúncia: ${agendamento.dataAgendamentoFormatada()}',
-                                style: TextStyle(fontSize: 14),
+                                'Data do agendamento: ${agendamento.dataAgendamentoFormatada()}',
+                                style: TextStyle(fontSize: 12),
                               ),
                             ],
                           ),

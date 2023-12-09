@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
-import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/HistoricoDenuncias.dart';
+import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/HistoricoAgendamentos.dart';
 
 class VisualizarSolicitacoesTest extends StatefulWidget {
   final Usuario usuario;
-  VisualizarSolicitacoesTest({Key? key, required this.usuario});
+
+  VisualizarSolicitacoesTest({Key? key, required this.usuario})
+      : super(key: key);
+
   @override
   State<VisualizarSolicitacoesTest> createState() =>
-      _VisualizarSolicitacoesState(usuario: usuario);
+      _VisualizarSolicitacoesState();
 }
 
 class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
   List<Denuncia> denuncias = [];
-  final Usuario usuario;
 
-  _VisualizarSolicitacoesState({required this.usuario});
+  @override
+  void initState() {
+    super.initState();
+    // Lógica de inicialização aqui, se necessário
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +64,7 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          HistoricoDenuncias(usuario: usuario),
+                          HistoricoDenuncias(usuario: widget.usuario),
                     ),
                   );
                 },
@@ -72,13 +77,15 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
                   ),
                 ),
               ),
-              /* ElevatedButton(
+
+              ElevatedButton(
                 onPressed: () {
+                  // Substitua 'agendamentos' pela sua lista de agendamentos
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                        //  FAZER INSTANCIA PRA IR PRA PAG DE AGENDAMENTOS,
+                          HistoricoAgendamento(usuario: widget.usuario),
                     ),
                   );
                 },
@@ -91,15 +98,14 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
                   ),
                 ),
               ),
-             */
               SizedBox(height: 16), // Espaçamento entre os botões
               ElevatedButton(
                 onPressed: () {
                   // Lógica do segundo botão
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.green // Cor do botão
-                    ),
+                  primary: Colors.green, // Cor do botão
+                ),
                 child: Text(
                   'Cancelar Solicitação',
                   style: TextStyle(

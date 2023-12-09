@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_coleta_seletiva/Models/Agendamento.dart';
-import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoAgendamento.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 
 class ListaAgendamentosWidget extends StatelessWidget {
