@@ -6,11 +6,21 @@ import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Telas/Menu.dart';
 
 import 'package:flutter/material.dart';
+import 'package:projeto_coleta_seletiva/Telas/ResetSenha/TelaResetSenha.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  Login({Key? key}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
-  Login({super.key});
+
+  bool _senhaVisivel = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,14 +57,27 @@ class Login extends StatelessWidget {
             TextFormField(
               controller: senhaController,
               keyboardType: TextInputType.text,
-              obscureText: true,
+              obscureText:
+                  !_senhaVisivel, // Modificado para controlar a visibilidade
               decoration: InputDecoration(
-                  labelText: "Senha",
-                  labelStyle: TextStyle(
+                labelText: "Senha",
+                labelStyle: TextStyle(
+                  color: Colors.black38,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _senhaVisivel ? Icons.visibility : Icons.visibility_off,
                     color: Colors.black38,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  )),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _senhaVisivel = !_senhaVisivel;
+                    });
+                  },
+                ),
+              ),
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -66,10 +89,10 @@ class Login extends StatelessWidget {
               child: TextButton(
                 child: Text('Esqueceu sua Senha?', textAlign: TextAlign.right),
                 onPressed: () {
-                  //Navigator.push(
-                  //context,
-                  //MaterialPageRoute(builder: (context) => resetSenha()),
-                  //);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TelaResetSenha()),
+                  );
                 },
               ),
             ),

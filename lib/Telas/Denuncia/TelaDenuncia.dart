@@ -123,15 +123,22 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                 const SizedBox(height: 16),
 
                 //Descrever denuncia
+                const Text(
+                  'Tipo de Denúncia:',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
+                ),
+                const SizedBox(height: 5),
+
                 TextFormField(
                   onChanged: (text) {
                     descricaoDenuncia = text;
                   },
                   maxLines: 5,
+                  style: const TextStyle(fontSize: 18.0),
                   decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    labelText: 'Descrição do estado do lixo:',
-                    labelStyle: const TextStyle(fontSize: 18.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
