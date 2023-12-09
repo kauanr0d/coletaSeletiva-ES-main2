@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/InputFormatter/CepInputFormatter.dart';
-import 'package:projeto_coleta_seletiva/Interfaces/DenunciaDAO.dart';
 import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
@@ -11,9 +10,8 @@ import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 class TelaDenuncia extends StatefulWidget {
   final Usuario usuario;
 
-  TelaDenuncia(
-      {Key? key,
-      required this.usuario}); // Construtor que recebe o usuário como parâmetro
+  TelaDenuncia({Key? key, required this.usuario})
+      : super(key: key); // Construtor que recebe o usuário como parâmetro
 
   @override
   State<TelaDenuncia> createState() => _TelaDenunciaState(usuario: usuario);
@@ -21,11 +19,16 @@ class TelaDenuncia extends StatefulWidget {
 
 class _TelaDenunciaState extends State<TelaDenuncia> {
   final Usuario usuario;
-  TipoDenuncia _selectedTipoDenuncia = TipoDenuncia.DescarteIrregular;
+  TipoDenuncia? _selectedTipoDenuncia;
   String descricaoDenuncia = "";
   Endereco endereco = Endereco("", "", 0, "");
 
   _TelaDenunciaState({required this.usuario});
+
+  TextEditingController bairroController = TextEditingController();
+  TextEditingController ruaController = TextEditingController();
+  TextEditingController numeroController = TextEditingController();
+  TextEditingController cepController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,20 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
             ),
           ),
           centerTitle: true, // Centraliza o título na AppBar
-          backgroundColor: Colors.green,
+          backgroundColor:
+              Colors.transparent, // Defina a cor de fundo como transparente
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.green,
+                  Color.fromARGB(255, 68, 202, 255),
+                ], // Cores do gradiente
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
           leading: GestureDetector(
             onTap: () {
               // Ação quando qualquer parte do container é clicada
@@ -62,215 +78,159 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
             ),
           ),
         ),
-        body: Padding(
-          //Controlar margem
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              //Tipo de denuncia
-              SizedBox(
-                height: 50,
-                child: DropdownButtonFormField<TipoDenuncia>(
-                  value: _selectedTipoDenuncia,
-                  onChanged: (TipoDenuncia? newValue) {
-                    if (newValue != null) {
+        body: SingleChildScrollView(
+          child: Padding(
+            //Controlar margem
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                //Tipo de denuncia
+                const Text(
+                  'Tipo de Denúncia:',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
+                ),
+                const SizedBox(height: 5),
+
+                SizedBox(
+                  height: 50, // Ajuste a altura conforme necessário
+                  child: DropdownButton<TipoDenuncia>(
+                    value: _selectedTipoDenuncia,
+                    items: TipoDenuncia.values.map((tipoDenuncia) {
+                      return DropdownMenuItem<TipoDenuncia>(
+                        value: tipoDenuncia,
+                        child: Text(
+                          tipoDenuncia.toCustomString(),
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
                       setState(() {
-                        _selectedTipoDenuncia = newValue;
+                        _selectedTipoDenuncia = value;
                       });
-                    }
+                    },
+                    hint: const Text(
+                      'Selecione o Tipo de Denúncia',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                //Descrever denuncia
+                TextFormField(
+                  onChanged: (text) {
+                    descricaoDenuncia = text;
                   },
-                  isExpanded: true,
-                  items: TipoDenuncia.values.map((TipoDenuncia tipo) {
-                    return DropdownMenuItem<TipoDenuncia>(
-                      value: tipo,
-                      //REGEX doida pra pegar o ENUM e fazer em texto
-                      child: Text(
-                        tipo
-                            .toString()
-                            .split('.')
-                            .last
-                            .splitMapJoin(
-                              RegExp(r'([A-Z])'),
-                              onMatch: (m) => ' ${m.group(1)}',
-                              onNonMatch: (n) => n,
-                            )
-                            .trim(),
-                        style: const TextStyle(
-                          fontSize: 18.0, // Tamanho da fonte
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    labelText: 'Descrição do estado do lixo:',
+                    labelStyle: const TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Por favor, insira uma descrição';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                //Definir ENDEREÇO denuncia
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        enderecoPopUp(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        disabledForegroundColor: Colors.green.withOpacity(0.38),
+                        disabledBackgroundColor: Colors.green.withOpacity(
+                            0.12), // Cor do texto ao ser pressionado
+                        side: const BorderSide(color: Colors.green),
+                        minimumSize: const Size(300, 50),
+                      ),
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Endereço',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    );
-                  }).toList(),
-                  icon: const Icon(Icons.arrow_drop_down_circle,
-                      color: Colors.green),
-                  dropdownColor: const Color.fromARGB(255, 243, 243, 243),
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 8.0), // Ajuste o valor conforme necessário
-                    filled: true,
-                    fillColor: Color.fromARGB(255, 243, 243, 243),
-                    labelText: 'Tipo de denúnica:',
-                    labelStyle: TextStyle(fontSize: 25.0),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.green, // Defina a cor desejada da borda
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.map,
+                        color: Colors.green,
                       ),
+                      onPressed: () {
+                        popUpGoogleMaps();
+                      },
                     ),
-                  ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(25.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.green,
+                    Color.fromARGB(255, 68, 202, 255),
+                  ], // Cores do gradiente
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
-
-              //Descrever denuncia
-              TextField(
-                onChanged: (text) {
-                  descricaoDenuncia = text;
-                },
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 243, 243, 243),
-                  labelText: 'Descreva o estado do lixo',
-                  labelStyle: TextStyle(fontSize: 18.0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 20),
-                  ),
-                ),
-                style: const TextStyle(fontSize: 18.0),
-              ),
-
-              //Definir ENDEREÇO denuncia
-              //BAIRRO
-              TextField(
-                onChanged: (text) {
-                  endereco.bairro = text;
-                },
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 243, 243, 243),
-                  labelText: 'Bairro do local:',
-                  labelStyle: TextStyle(fontSize: 18.0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 20),
-                  ),
-                ),
-                style: const TextStyle(fontSize: 18.0),
-              ),
-
-              //RUA
-              TextField(
-                onChanged: (text) {
-                  endereco.rua = text;
-                },
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 243, 243, 243),
-                  labelText: 'Rua do local:',
-                  labelStyle: TextStyle(fontSize: 18.0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 20),
-                  ),
-                ),
-                style: const TextStyle(fontSize: 18.0),
-              ),
-
-              //NUMERO
-              TextField(
-                onChanged: (text) {
-                  //Converter para int
-                  endereco.numero = int.parse(text);
-                },
-                keyboardType: TextInputType
-                    .number, //Define o tipo de teclado para aceitar apenas números
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly
-                ], //Aceita apenas dígitos
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 243, 243, 243),
-                  labelText: 'Número do local:',
-                  labelStyle: TextStyle(fontSize: 18.0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 20),
-                  ),
-                ),
-                style: const TextStyle(fontSize: 18.0),
-              ),
-
-              //CEP
-              TextField(
-                onChanged: (text) {
-                  text = text.replaceAll(' ', ''); //Remover espaços em branco
-
-                  endereco.cep = text;
-                },
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(
-                      8), // Limite para 9 caracteres (incluindo o hífen)
-                  CepInputFormatter(), // Formatter customizado para formatar o CEP
-                ],
-                decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 243, 243, 243),
-                  labelText: 'CEP do local:',
-                  labelStyle: TextStyle(fontSize: 18.0),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green, width: 20),
-                  ),
-                ),
-                style: const TextStyle(fontSize: 18.0),
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.map,
-                      color: Colors.green,
-                    ),
-                    onPressed: () {
-                      popUpGoogleMaps();
-                    },
-                  ),
-                ],
-              ),
-
-              //Enviar denuncia
-              SizedBox(
+              child: SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
                     _vericarInput(usuario);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors
+                        .transparent, //Defina a cor de fundo como transparente
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          12.0), //Ajuste o raio conforme necessário
+                    ),
                   ),
                   child: const Text(
                     'ENVIAR',
                     style: TextStyle(
-                      color: Colors.white, // Cor do texto
-                      fontSize: 20, // Tamanho do texto
+                      color: Colors.white,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      // Adicione outras propriedades de estilo conforme necessário
                     ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -308,7 +268,6 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
       numero: endereco.numero.toString(),
     );
 
-    //TODO: Remover comentario quando estiver funcionando a adição de denuncia
     //Chamar o método salvarDenuncia da instância de DenunciaDAO
     denunciaDAO.salvarDenuncia(denuncia, usuario);
     Navigator.pop(context);
@@ -340,6 +299,157 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                     TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
               ),
             )
+          ],
+        ),
+      );
+
+  Future enderecoPopUp(BuildContext context) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.green,
+          title: const Text(
+            "Endereço",
+            style: TextStyle(color: Colors.white),
+          ),
+          insetPadding: EdgeInsets.zero,
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                // BAIRRO
+                TextField(
+                  controller: bairroController,
+                  onChanged: (text) {
+                    endereco.bairro = text;
+                  },
+                  maxLines: 2,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 8.0),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 243, 243, 243),
+                    labelText: 'Bairro:',
+                    labelStyle: const TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 20),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+
+                // RUA
+                TextField(
+                  controller: ruaController,
+                  onChanged: (text) {
+                    endereco.rua = text;
+                  },
+                  maxLines: 2,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 8.0),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 243, 243, 243),
+                    labelText: 'Rua:',
+                    labelStyle: const TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 20),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+
+                // NUMERO
+                TextField(
+                  controller: numeroController,
+                  onChanged: (text) {
+                    //Converter para int
+                    endereco.numero = int.parse(text);
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ], //Aceita apenas dígitos
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 8.0),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 243, 243, 243),
+                    labelText: 'Número: (Opcional)',
+                    labelStyle: const TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 20),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+
+                // CEP
+                TextField(
+                  controller: cepController,
+                  onChanged: (text) {
+                    text = text.replaceAll(' ', ''); //Remover espaços em branco
+
+                    endereco.cep = text;
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(
+                        8), // Limite para 9 caracteres (incluindo o hífen)
+                    CepInputFormatter(), // Formatter customizado para formatar o CEP
+                  ],
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 8.0),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 243, 243, 243),
+                    labelText: 'CEP: (Opcional)',
+                    labelStyle: const TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 20),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 18.0),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ButtonBar(
+              alignment: MainAxisAlignment.start,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                  child: const Text(
+                    "FECHAR",
+                    style: TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       );

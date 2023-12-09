@@ -31,20 +31,32 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Center(
-            child: Text(
-              'Agendamento',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          title: const Text(
+            'Agendamento',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          centerTitle: true,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
-          backgroundColor: Colors.green,
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.green,
+                  Color.fromARGB(255, 68, 202, 255),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -135,7 +147,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       ),
                     ),
                   ),
-                  
+
                   //Tipos De Residuos
                   const SizedBox(height: 16),
                   Container(
@@ -184,7 +196,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Exibir os resíduos selecionados 
+                  // Exibir os resíduos selecionados
                   Container(
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 228, 233, 228),
@@ -217,7 +229,8 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                             itemCount: _selecaoTiposAgendamento.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 4),
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Colors.green,
@@ -243,27 +256,51 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       ],
                     ),
                   ),
-
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        _salvarFormulario();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      minimumSize: const Size(double.infinity, 40),
-                    ),
-                    child: const Text(
-                      'Agendar Coleta',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(25.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.green,
+                    Color.fromARGB(255, 68, 202, 255),
+                  ], // Cores do gradiente
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _salvarFormulario();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors
+                        .transparent, //Defina a cor de fundo como transparente
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          12.0), //Ajuste o raio conforme necessário
                     ),
                   ),
-                ],
+                  child: const Text(
+                    'AGENDAR COLETA',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -289,7 +326,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
   void _salvarFormulario() {
     if (_selecaoTiposAgendamento.isNotEmpty) {
-       /*TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
+      /*TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
       final agendamento = Agendamento(
         _selecaoTiposAgendamento[0],
         _descricaoController.text,
