@@ -37,7 +37,6 @@ class UsuarioDAOImpl implements UsuarioDAO {
     sql = "DELETE FROM usuario WHERE id = ?";
     await _db!.rawDelete(sql, [usuario.idUsuario]);
     _db!.close();
-    throw UnimplementedError();
   }
 
   removerPorCpf(Usuario usuario) async {
@@ -46,7 +45,6 @@ class UsuarioDAOImpl implements UsuarioDAO {
     sql = "DELETE FROM usuario WHERE cpf = ?";
     await _db!.rawDelete(sql, [usuario.cpf]);
     _db!.close();
-    throw UnimplementedError();
   }
 
   @override
@@ -66,6 +64,29 @@ class UsuarioDAOImpl implements UsuarioDAO {
       usuario.rua,
       usuario.numero
     ]);
-    throw UnimplementedError();
+  }
+
+  removerDadosDoUsuario(Usuario usuario) async {
+    var sql;
+    _db = await Conexao.getConexao();
+    sql = "delete from denuncia where id_usuario = ?";
+    await _db!.rawDelete(sql, [usuario.idUsuario]);
+    sql = "delete from agendamento where id_usuario = ?";
+    await _db!.rawDelete(sql, [usuario.idUsuario]);
+  }
+
+  atualizarCadastro(Usuario usuario) async {
+    var sql;
+    _db = await Conexao.getConexao();
+    sql =
+        "update usuario set telefone = ?, email = ? rua = ?, CEP = ?, bairro = ?, rua = ?, numero = ?";
+    await _db!.rawUpdate(sql, [
+      usuario.telefone,
+      usuario.email,
+      usuario.cep,
+      usuario.bairro,
+      usuario.rua,
+      usuario.numero
+    ]);
   }
 }

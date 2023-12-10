@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_coleta_seletiva/Telas/Agendamento/TelaAgendamento.dart';
-import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Telas/Denuncia/TelaDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Telas/Login.dart';
+import 'package:projeto_coleta_seletiva/Telas/Meu%20Perfil/Perfil.dart';
 import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/VisualizarSolicitacoes.dart';
 import 'package:projeto_coleta_seletiva/Telas/ChatBot/ChatBot.dart';
 
@@ -81,6 +80,23 @@ class _MenuState extends State<Menu> {
               style: ElevatedButton.styleFrom(primary: Colors.green),
               child: Text(
                 'CHAT DÚVIDAS',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Perfil(usuario: usuario)),
+                );
+              },
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+              child: Text(
+                'MEU PERFIL',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14.0,
