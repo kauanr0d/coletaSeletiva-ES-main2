@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
+import 'package:projeto_coleta_seletiva/Telas/Meu%20Perfil/AlterarDados.dart';
 import 'package:projeto_coleta_seletiva/Telas/Meu%20Perfil/MeusDados.dart';
 import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/VisualizarSolicitacoes.dart';
+import 'package:projeto_coleta_seletiva/Telas/Meu Perfil/MeusDados.dart';
+
 import 'package:image/image.dart' as img;
 
 class Perfil extends StatefulWidget {
@@ -35,15 +39,12 @@ class _PerfilState extends State<Perfil> {
   Future<File> _cropImage(File imageFile) async {
     final rawImage = img.decodeImage(await imageFile.readAsBytes());
 
-    // Use a dialog ou outra interface para permitir ao usuário cortar a imagem.
-
-    // Supondo que você selecionou uma região retangular para cortar.
     final croppedImage = img.copyCrop(
       rawImage!,
       x: 0,
       y: 0,
-      width: 100, // Ajuste esses valores conforme necessário.
-      height: 100,
+      width: rawImage.width,
+      height: rawImage.height,
     );
 
     final croppedFile = File('caminho_para_salvar/cropped_image.jpg');
@@ -116,11 +117,14 @@ class _PerfilState extends State<Perfil> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
+              onPressed: () async {
+                Usuario? usuarioCarregado = await UsuarioDAOImpl().carregarUsuario(
+                    usuario); // Carrega o objeto usuário com os dados atualizados
+                Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => MeusDados(usuario: usuario),
+                    builder: (context) => MeusDados(
+                        usuario:
+                            usuarioCarregado), //passando o usuario carregado
                   ),
                 );
               },
@@ -133,12 +137,12 @@ class _PerfilState extends State<Perfil> {
                 ),
               ),
             ),
-            /* ElevatedButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MeusDados(usuario: usuario),
+                    builder: (context) => AlterarDados(usuario: usuario),
                   ),
                 );
               },
@@ -150,25 +154,7 @@ class _PerfilState extends State<Perfil> {
                   fontSize: 14.0,
                 ),
               ),
-            ),*/
-            /* ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MeusDados(usuario: usuario),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'EXCLUIR CONTA',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
-              ),
-            ),*/
+            ),
           ],
         ),
       ),

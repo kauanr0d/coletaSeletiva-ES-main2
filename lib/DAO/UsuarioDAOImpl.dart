@@ -15,16 +15,28 @@ class UsuarioDAOImpl implements UsuarioDAO {
     throw UnimplementedError();
   }
 
+  Future<Usuario?> carregarUsuario(Usuario usuario) async {
+    _db = await Conexao.getConexao();
+    var sql = "SELECT * FROM usuario WHERE idUsuario =  ?";
+    List<Map<String, dynamic>> resultado =
+        await _db!.rawQuery(sql, [usuario.idUsuario]);
+    if (resultado.isEmpty) {
+      return null;
+    } else {
+      return Usuario.fromMap(resultado.first);
+    }
+  }
+
   Future<Usuario?> login(String email, String senha) async {
     _db = await Conexao.getConexao();
 
     var sql = "SELECT * FROM usuario WHERE email = ? and senha = ? LIMIT 1";
 
-    List<Map<String, dynamic>> result =
+    List<Map<String, dynamic>> resultado =
         await _db!.rawQuery(sql, [email, senha]);
 
-    if (result.isEmpty != true) {
-      return Usuario.fromMap(result.first);
+    if (resultado.isEmpty != true) {
+      return Usuario.fromMap(resultado.first);
     } else {
       return null;
     }
@@ -34,9 +46,8 @@ class UsuarioDAOImpl implements UsuarioDAO {
   remover(Usuario usuario) async {
     var sql;
     _db = await Conexao.getConexao();
-    sql = "DELETE FROM usuario WHERE id = ?";
+    sql = "DELETE FROM usuario WHERE idUsuario = ?";
     await _db!.rawDelete(sql, [usuario.idUsuario]);
-    _db!.close();
   }
 
   removerPorCpf(Usuario usuario) async {
@@ -69,9 +80,9 @@ class UsuarioDAOImpl implements UsuarioDAO {
   removerDadosDoUsuario(Usuario usuario) async {
     var sql;
     _db = await Conexao.getConexao();
-    sql = "delete from denuncia where id_usuario = ?";
+    sql = "delete from denuncia where idUsuario = ?";
     await _db!.rawDelete(sql, [usuario.idUsuario]);
-    sql = "delete from agendamento where id_usuario = ?";
+    sql = "delete from agendamento where idUsuario = ?";
     await _db!.rawDelete(sql, [usuario.idUsuario]);
   }
 
@@ -79,14 +90,15 @@ class UsuarioDAOImpl implements UsuarioDAO {
     var sql;
     _db = await Conexao.getConexao();
     sql =
-        "update usuario set telefone = ?, email = ? rua = ?, CEP = ?, bairro = ?, rua = ?, numero = ?";
+        "UPDATE usuario SET telefone = ?, email = ?, rua = ?, CEP = ?, bairro = ?, numero = ? WHERE idUsuario = ?";
     await _db!.rawUpdate(sql, [
       usuario.telefone,
       usuario.email,
+      usuario.rua,
       usuario.cep,
       usuario.bairro,
-      usuario.rua,
-      usuario.numero
+      usuario.numero,
+      usuario.idUsuario
     ]);
   }
 }

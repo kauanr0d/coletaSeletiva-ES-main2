@@ -24,7 +24,6 @@ class AgendamentoDAOImpl implements AgendamentoDAO {
     _db = await Conexao.getConexao();
     sql = "DELETE FROM agendamento WHERE id_agendamento = ?";
     await _db!.rawDelete(sql, [agendamento.idAgendamento]);
-    _db!.close();
   }
 
   @override
