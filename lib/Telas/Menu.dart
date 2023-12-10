@@ -20,113 +20,130 @@ class _MenuState extends State<Menu> {
 
   _MenuState({required this.usuario});
 
+  //Widget de gradiente de Kauan
+  Widget _buildGradientButton(
+      {required String text, required VoidCallback onPressed}) {
+    return Container(
+      width: 300.0,
+      height: 45,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0), // Ajustado para 25
+        gradient: const LinearGradient(
+          colors: [
+            Colors.green,
+            Color.fromARGB(255, 68, 202, 255),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.transparent, // Cor do texto
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0), // Ajustado para 25
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: 250,
               height: 250,
               child: Image.asset('assets/seletinhoHomePage.png'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TelaAgendamento(usuario: usuario),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'AGENDAMENTOS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildGradientButton(
+                  text: 'AGENDAR COLETA',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TelaAgendamento(usuario: usuario),
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TelaDenuncia(usuario: usuario),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'DENÚNCIAS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
+                const SizedBox(height: 16),
+                _buildGradientButton(
+                  text: 'DENÚNCIAR',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TelaDenuncia(usuario: usuario),
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChatBot()),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'CHAT DÚVIDAS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
+                const SizedBox(height: 16),
+                _buildGradientButton(
+                  text: 'CHAT DÚVIDAS',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatBot(),
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Perfil(usuario: usuario)),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'MEU PERFIL',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
+                const SizedBox(height: 16),
+                _buildGradientButton(
+                  text: 'MEU PERFIL',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Perfil(usuario: usuario),
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        VisualizarSolicitacoesTest(usuario: usuario),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'HISTÓRICO DE SOLICITAÇÕES',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
+                const SizedBox(height: 16),
+                _buildGradientButton(
+                  text: 'HISTÓRICO DE SOLICITAÇÕES',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            VisualizarSolicitacoesTest(usuario: usuario),
+                      ),
+                    );
+                  },
                 ),
-              ),
+                const SizedBox(height: 16),
+              ],
             ),
             Container(
               height: 100,
               alignment: Alignment.center,
               child: TextButton(
-                child: Text(
+                child: const Text(
                   'Sair',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.black, fontSize: 14),

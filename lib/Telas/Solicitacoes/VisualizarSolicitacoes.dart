@@ -27,8 +27,10 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
   Widget _buildGradientButton(
       {required String text, required VoidCallback onPressed}) {
     return Container(
+      width: 300.0,
+      height: 50.0,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(25.0), // Ajustado para 25
         gradient: LinearGradient(
           colors: [
             Colors.green,
@@ -44,14 +46,14 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
           primary: Colors.transparent, // Cor de fundo transparente
           onPrimary: Colors.white, // Cor do texto
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(25.0), // Ajustado para 25
           ),
         ),
         child: Text(
           text,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 14.0,
+            fontSize: 16.0,
           ),
         ),
       ),
@@ -64,10 +66,9 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Histórico De Solicitações',
+            'Solicitações',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 19,
               fontWeight: FontWeight.bold,
               letterSpacing: 3,
             ),
@@ -100,9 +101,11 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
             ),
           ),
         ),
-        body: Center(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildGradientButton(
                 text: 'VISUALIZAR DENÚNCIAS',
@@ -117,7 +120,7 @@ class _VisualizarSolicitacoesState extends State<VisualizarSolicitacoesTest> {
                 },
               ),
 
-              SizedBox(height: 16), // Espaçamento entre os botões
+              SizedBox(height: 16 * 3), // Espaçamento entre os botões
 
               _buildGradientButton(
                 text: 'VISUALIZAR AGENDAMENTOS',

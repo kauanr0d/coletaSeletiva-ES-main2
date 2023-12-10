@@ -92,7 +92,6 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
             'Agendamentos',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: 3,
             ),
@@ -126,6 +125,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
           ),
         ),
         body: Container(
+          width: double.infinity, // Ocupa toda a largura da tela
           padding: EdgeInsets.all(8),
           margin: EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
@@ -146,9 +146,9 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
               Text(
                 'Lista de Agendamentos',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.green,
                 ),
               ),
               SizedBox(height: 8),
@@ -156,7 +156,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoAgendamento> {
                 Text(
                   'Nenhum agendamento encontrado.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Colors.grey,
                   ),
                 )

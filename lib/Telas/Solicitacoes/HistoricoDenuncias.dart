@@ -42,10 +42,9 @@ class _VisualizarSolicitacoesState extends State<HistoricoDenuncias> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Histórico De Denúncias',
+            'Denúncias',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
               fontWeight: FontWeight.bold,
               letterSpacing: 3,
             ),
@@ -79,6 +78,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoDenuncias> {
           ),
         ),
         body: Container(
+          width: double.infinity, // Ocupa toda a largura da tela
           padding: EdgeInsets.all(8),
           margin: EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
@@ -99,9 +99,9 @@ class _VisualizarSolicitacoesState extends State<HistoricoDenuncias> {
               Text(
                 'Lista de Denúncias',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.green,
                 ),
               ),
               SizedBox(height: 8),
@@ -109,7 +109,7 @@ class _VisualizarSolicitacoesState extends State<HistoricoDenuncias> {
                 Text(
                   'Nenhuma denúncia encontrada.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Colors.grey,
                   ),
                 )
