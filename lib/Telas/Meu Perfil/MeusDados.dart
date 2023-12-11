@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 
 class MeusDados extends StatelessWidget {
-  final Usuario usuario;
+  final Usuario? usuario;
 
   MeusDados({required this.usuario});
 
@@ -64,14 +65,14 @@ class MeusDados extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildInfo('Nome:', usuario.nome),
-            buildInfo('Email:', usuario.email),
-            buildInfo('CPF:', usuario.cpf),
-            buildInfo('Telefone:', usuario.telefone),
-            buildInfo('Bairro:', usuario.bairro),
-            buildInfo('Rua:', usuario.rua),
-            buildInfo('Número:', usuario.numero),
-            buildInfo('CEP:', usuario.cep),
+            buildInfo('Nome:', usuario?.nome),
+            buildInfo('Email:', usuario?.email),
+            buildInfo('CPF:', usuario?.cpf),
+            buildInfo('Telefone:', usuario?.telefone),
+            buildInfo('Bairro:', usuario?.bairro),
+            buildInfo('Rua:', usuario?.rua),
+            buildInfo('Número:', usuario?.numero),
+            buildInfo('CEP:', usuario?.cep),
           ],
         ),
       ),
