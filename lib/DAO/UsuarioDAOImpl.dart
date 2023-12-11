@@ -63,7 +63,7 @@ class UsuarioDAOImpl implements UsuarioDAO {
     var sql;
     _db = await Conexao.getConexao();
     sql =
-        "INSERT INTO usuario(nome,senha,cpf,telefone,email,CEP,bairro,rua,numero) VALUES(?,?,?,?,?,?,?,?,?,?);";
+        "INSERT INTO usuario(nome,senha,cpf,telefone,email,CEP,bairro,rua,numero) VALUES(?,?,?,?,?,?,?,?,?);";
     await _db!.rawInsert(sql, [
       usuario.nome,
       usuario.senha,

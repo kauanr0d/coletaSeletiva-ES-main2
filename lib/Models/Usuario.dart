@@ -41,6 +41,28 @@ class Usuario {
     return map;
   }
 
+  Usuario(
+      {String? nome,
+      String? senha,
+      String? cpf,
+      String? telefone,
+      String? email,
+      int? idUsuario,
+      String? bairro,
+      String? cep,
+      String? rua,
+      String? numero})
+      : _nome = nome,
+        _senha = senha,
+        _cpf = cpf,
+        _telefone = telefone,
+        _email = email,
+        _idUsuario = idUsuario,
+        _bairro = bairro,
+        _cep = cep,
+        _rua = rua,
+        _numero = numero;
+
   Usuario.fromMap(dynamic obj) {
     _idUsuario = obj['idUsuario'];
     _email = obj['email'];
