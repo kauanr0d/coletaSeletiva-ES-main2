@@ -5,11 +5,13 @@ import 'package:projeto_coleta_seletiva/DAO/AgendamentoDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Interfaces/AgendamentoDAO.dart';
 import 'package:projeto_coleta_seletiva/Models/Agendamento.dart';
 
+// Criação da Classe TelaAgendamento, que extends a o widget StatefulWidget(possui estado mutavel)
 class TelaAgendamento extends StatefulWidget {
-  final Usuario usuario;
+  final Usuario usuario; 
 
-  TelaAgendamento({Key? key, required this.usuario}) : super(key: key);
+  TelaAgendamento({Key? key, required this.usuario}) : super(key: key); //Construtor da classe, recebe o usuario(required) e uma chave 
 
+  // Cria e retorna uma instancia do estado associado a instancia de TelaAgndamento
   @override
   State<TelaAgendamento> createState() =>
       _TelaAgendamentoState(usuario: usuario);
@@ -19,24 +21,26 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   final AgendamentoDAO agendamentoDAO = AgendamentoDAOImpl();
   final Usuario usuario;
 
-  _TelaAgendamentoState({required this.usuario});
-
+  _TelaAgendamentoState({required this.usuario}); // Construtor da classe e exige o objeto Usuario(Required)
+  //_formKey é a chave usada para manipular o estado do formulário, como validação e redefinição.
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _descricao = TextEditingController();
-  DateTime? _selecaoData;
-  List<TipoAgendamento> _selecaoTiposAgendamento = [];
 
+  TextEditingController _descricao = TextEditingController();//Controlador que será usado no campo de texto no formulario
+  DateTime? _selecaoData;  //Variavel que armazenará a Data 
+  List<TipoAgendamento> _selecaoTiposAgendamento = []; // Declaração de uma lista, usada para selecionar os tipos de agendamento
+  
+  // Construção da tela de interface da tela agendamento usando o Framework flutter 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
+  Widget build(BuildContext context) { //utilzado para construir a hierarquia de widgets 
+    return MaterialApp( // Widget que configura a estrutura basica do aplicativo(Temas, navegação)
+      home: Scaffold( 
+        appBar: AppBar( // Define a barra superior do aplicativo 
           title: const Text(
             'Agendamento',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
           centerTitle: true,
-          leading: Padding(
+          leading: Padding( // botão voltar
             padding: const EdgeInsets.only(left: 8.0),
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -46,7 +50,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
               },
             ),
           ),
-          flexibleSpace: Container(
+          flexibleSpace: Container( // designer da barra superior
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -59,20 +63,20 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
+        body: SingleChildScrollView( //Widget que permite rolar a tela 
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
+            padding: const EdgeInsets.all(16.0), // Espaçamento uniforme de todos os lados
+            child: Form( // Widget utilizado para crir formulario e validar
               key: _formKey,
-              child: Column(
+              child: Column( // Widget que organiza os widgets filhos na vertical
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 16),
+                children: [  //Especifica uma lista de widgets filhos 
+                  const SizedBox(height: 16), // Adiciona espaçamneto entre s widgets
                   Center(
-                    child: Container(
+                    child: Container( //utilizado para contér  a imagem da tela
                       width: 200,
                       height: 200,
-                      decoration: BoxDecoration(
+                      decoration: BoxDecoration( // decorar a imagem 
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: Colors.grey.withOpacity(0.5),
@@ -85,12 +89,12 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 16), // Espaçamento
 
                   // Descricao do Agendamento
-                  TextFormField(
+                  TextFormField(   // Widget utlizado para criar um campo de texto para entrada de dados
                     controller: _descricao,
-                    decoration: InputDecoration(
+                    decoration: InputDecoration( // Aparência do campo de texto
                       labelText: 'Descrição do Agendamento',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -98,7 +102,6 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       filled: true,
                       fillColor: Colors.white,
                     ),
-                    textCapitalization: TextCapitalization.sentences,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, insira uma descrição';
@@ -107,16 +110,16 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     },
                   ),
 
-                  //Data de Coleta
-                  const SizedBox(height: 16),
-
-                  GestureDetector(
-                    onTap: () {
+                  const SizedBox(height: 16), // espaçamento
+                  
+                   //Data de Coleta
+                  GestureDetector( // Widget que detectar gestos
+                    onTap: () { // Com base no toque dá tela
                       _selecionarData(context);
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
+                    child: Container( // Widget retangular que armazenrá a data após seleção
+                      padding: const EdgeInsets.all(16), // Espaçamento interno no retangulo
+                      decoration: BoxDecoration( // Defini a aparencia do retangulo
                         color: Color.fromARGB(255, 255, 255, 255),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
@@ -124,14 +127,14 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                           width: 2,
                         ),
                       ),
-                      child: Row(
+                      child: Row( // Widget que serve para organizar o conteudo no retangulo 
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
                             'Data de Coleta: ',
                             style: TextStyle(fontSize: 16),
                           ),
-                          if (_selecaoData != null)
+                          if (_selecaoData != null) // Exibi a data se for diferente de null
                             Text(
                               '${_selecaoData!.day}/${_selecaoData!.month}/${_selecaoData!.year}',
                             ),
@@ -140,10 +143,11 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     ),
                   ),
 
-                  //Tipos De Residuos
                   const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
+
+                  //Tipos De Residuos
+                  Container( // Recipiente retangular para aplicar estilos 
+                    decoration: BoxDecoration( // Definiçãoo da decoração do retangulo
                       color: Color.fromARGB(255, 252, 252, 252),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
@@ -151,16 +155,16 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                         width: 2,
                       ),
                     ),
-                    child: ExpansionTile(
+                    child: ExpansionTile( // Widget que cria um bloco expansivel quando clicado
                       title: const Text(
                         'Tipos de Resíduos',
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
-                      children: TipoAgendamento.values
+                      children: TipoAgendamento.values // Pega os tipos de Agendamentos e coloca dentro de uma lista RadioListTile
                           .map(
-                            (tipo) => RadioListTile(
+                            (tipo) => RadioListTile( // Widget que apresenta varios itens com possibilidade de apenas uma seleção
                               title: Text(
                                 tipo.toString().split('.').last,
                                 style: const TextStyle(fontSize: 16),
@@ -169,7 +173,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                               groupValue: _selecaoTiposAgendamento.isNotEmpty
                                   ? _selecaoTiposAgendamento[0]
                                   : null,
-                              onChanged: (TipoAgendamento? value) {
+                              onChanged: (TipoAgendamento? value) { //(Atualiza o estado) Funçao de retorno que é chamada quando o usuario seleciona um item
                                 setState(() {
                                   _selecaoTiposAgendamento.clear();
                                   if (value != null) {
@@ -182,7 +186,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                           .toList(),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 16), // espaçamento
 
                   // Exibir os resíduos selecionados
                   Container(
@@ -196,7 +200,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
+                      children: [  // Lista de Widgets que são emmpilhados na vertical
                         const SizedBox(height: 16),
                         const Text(
                           'Resíduo Selecionado: ',
@@ -206,13 +210,13 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Container(
+                        Container( // Conteiner que contem o tipo de residuo
                           height: 40,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: _selecaoTiposAgendamento.length,
                             itemBuilder: (context, index) {
-                              return Container(
+                              return Container( // Exibir o item selecionado
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 4),
                                 padding: const EdgeInsets.all(8),
@@ -246,12 +250,14 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
+
+        //Botão agendar coleta
+        bottomNavigationBar: Padding( //Adiciona um preenchimento (espaço em branco)  ao redor do conteúdo dentro do bottomNavigationBar
           padding: const EdgeInsets.all(16.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(25.0),
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: const BoxDecoration( // Visual do Botão
                 gradient: LinearGradient(
                   colors: [
                     Colors.green,
@@ -261,11 +267,11 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: SizedBox(
-                height: 50,
-                child: ElevatedButton(
+              child: SizedBox( // difinir altura
+                height: 50, 
+                child: ElevatedButton( 
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
+                    if (_formKey.currentState?.validate() ?? false) { // Se valido, chama a função 
                       _salvarFormulario();
                     }
                   },
