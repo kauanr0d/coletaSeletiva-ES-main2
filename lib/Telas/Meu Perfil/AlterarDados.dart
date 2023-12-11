@@ -3,7 +3,7 @@ import 'package:projeto_coleta_seletiva/Controller/AtualizarContaController.dart
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 
 class AlterarDados extends StatefulWidget {
-  final Usuario usuario;
+  final Usuario? usuario;
 
   AlterarDados({required this.usuario});
 
@@ -25,14 +25,15 @@ class _AlterarDadosState extends State<AlterarDados> {
     super.initState();
 
     // Preencher os campos com os dados atuais do usuário
-    _telefoneController.text = widget.usuario.telefone ?? '';
-    _emailController.text = widget.usuario.email ?? '';
-    _cepController.text = widget.usuario.cep ?? '';
-    _bairroController.text = widget.usuario.bairro ?? '';
-    _ruaController.text = widget.usuario.rua ?? '';
-    _numeroController.text = widget.usuario.numero ?? '';
+    _telefoneController.text = widget.usuario?.telefone ?? '';
+    _emailController.text = widget.usuario?.email ?? '';
+    _cepController.text = widget.usuario?.cep ?? '';
+    _bairroController.text = widget.usuario?.bairro ?? '';
+    _ruaController.text = widget.usuario?.rua ?? '';
+    _numeroController.text = widget.usuario?.numero ?? '';
   }
 
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,40 +72,42 @@ class _AlterarDadosState extends State<AlterarDados> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                // Criar um novo usuário com os dados atualizados
-                Usuario novoUsuario = Usuario.fromMap({
-                  'idUsuario': widget.usuario.idUsuario,
-                  'nome': widget.usuario.nome,
-                  'senha': widget.usuario.senha,
-                  'cpf': widget.usuario.cpf,
-                  'telefone': _telefoneController.text.isNotEmpty
-                      ? _telefoneController.text
-                      : widget.usuario.telefone,
-                  'email': _emailController.text.isNotEmpty
-                      ? _emailController.text
-                      : widget.usuario.email,
-                  'cep': _cepController.text.isNotEmpty
-                      ? _cepController.text
-                      : widget.usuario.cep,
-                  'bairro': _bairroController.text.isNotEmpty
-                      ? _bairroController.text
-                      : widget.usuario.bairro,
-                  'rua': _ruaController.text.isNotEmpty
-                      ? _ruaController.text
-                      : widget.usuario.rua,
-                  'numero': _numeroController.text.isNotEmpty
-                      ? _numeroController.text
-                      : widget.usuario.numero,
-                });
+                // Verificar se todos os campos não são null
+                if (_telefoneController.text.isNotEmpty &&
+                    _emailController.text.isNotEmpty &&
+                    _cepController.text.isNotEmpty &&
+                    _bairroController.text.isNotEmpty &&
+                    _ruaController.text.isNotEmpty &&
+                    _numeroController.text.isNotEmpty) {
+                  // Criando um novo usuário com os dados atualizados
+                  Usuario novoUsuario = Usuario.fromMap({
+                    'idUsuario': widget.usuario?.idUsuario,
+                    'nome': widget.usuario?.nome,
+                    'senha': widget.usuario?.senha,
+                    'cpf': widget.usuario?.cpf,
+                    'telefone': _telefoneController.text,
+                    'email': _emailController.text,
+                    'cep': _cepController.text,
+                    'bairro': _bairroController.text,
+                    'rua': _ruaController.text,
+                    'numero': _numeroController.text,
+                  });
 
-                // Chamar a função de atualização no banco
-                await _controller.at(novoUsuario);
+                  await _controller.at(novoUsuario); //atualização
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Dados atualizados com sucesso!'),
-                  ),
-                );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Dados atualizados com sucesso!'),
+                    ),
+                  );
+                } else {
+                  // Exibir mensagem ou tratar quando algum campo obrigatório estiver vazio
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Preencha todos os campos obrigatórios!'),
+                    ),
+                  );
+                }
               },
               child: Text('Salvar Alterações'),
             ),

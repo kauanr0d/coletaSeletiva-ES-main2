@@ -138,11 +138,14 @@ class _PerfilState extends State<Perfil> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                Usuario? usuarioCarregado =
+                    await UsuarioDAOImpl().carregarUsuario(usuario);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AlterarDados(usuario: usuario),
+                    builder: (context) =>
+                        AlterarDados(usuario: usuarioCarregado),
                   ),
                 );
               },
