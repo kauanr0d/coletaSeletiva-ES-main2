@@ -87,7 +87,7 @@ class _AlterarDadosState extends State<AlterarDados> {
                     'cpf': widget.usuario?.cpf,
                     'telefone': _telefoneController.text,
                     'email': _emailController.text,
-                    'cep': _cepController.text,
+                    'CEP': _cepController.text,
                     'bairro': _bairroController.text,
                     'rua': _ruaController.text,
                     'numero': _numeroController.text,
