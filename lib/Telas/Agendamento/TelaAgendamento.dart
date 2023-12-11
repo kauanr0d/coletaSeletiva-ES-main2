@@ -317,11 +317,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
       );
       //ignore: avoid_print
       print(agendamento.tipoAgendamento.toString());
-      await agendamentoDAO.salvarAgendamento(agendamento, usuario);
-
-      //Navigator.pop(context);
-      // agendamentoDAO.salvarAgendamento(agendamento, usuario);
-
+      agendamentoDAO.salvarAgendamento(agendamento, usuario);
       Navigator.pop(context);
     } else {
       showDialog(

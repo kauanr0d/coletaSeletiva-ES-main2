@@ -18,7 +18,7 @@ class Conexao {
       //ignore: avoid_print
       print(caminho);
       _db = await openDatabase(caminho,
-          version: 1, singleInstance: true, onCreate: _onCreate);
+          version: 1, singleInstance: false, onCreate: _onCreate);
     }
     if (_db != null) {
       return _db!;
@@ -59,6 +59,7 @@ class Conexao {
         descricao TEXT NOT NULL,
         id_usuario INTEGER NOT NULL,
         data_agendamento DATE NOT NULL,
+        tipo_agendamento TEXT NOT NULL,
         FOREIGN KEY (id_usuario) REFERENCES usuario(idUsuario)
       );
     ''');
