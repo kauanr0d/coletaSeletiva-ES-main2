@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
+
+import '../../../Models/Usuario.dart';
 
 /*class Cadastro extends StatelessWidget {
   const Cadastro({super.key});
@@ -37,7 +40,15 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> {
   final _formKey = GlobalKey<FormState>();
-  //final _telefoneController = TextEditingController();
+  final TextEditingController _telefoneController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _bairroController = TextEditingController();
+  final TextEditingController _ruaController = TextEditingController();
+  final TextEditingController _numeroController = TextEditingController();
+  final TextEditingController _cepController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +106,7 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                   TextFormField(
+                    controller: _nomeController,
                     decoration: InputDecoration(
                       labelText: 'Nome',
                       border: OutlineInputBorder(
@@ -110,6 +122,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _cpfController,
                     inputFormatters: [maskCPF],
                     decoration: InputDecoration(
                       labelText: 'CPF',
@@ -127,6 +140,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _telefoneController,
                     inputFormatters: [mask],
                     decoration: InputDecoration(
                       labelText: 'Telefone',
@@ -147,6 +161,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _ruaController,
                     decoration: InputDecoration(
                       labelText: 'Rua',
                       border: OutlineInputBorder(
@@ -161,6 +176,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _numeroController,
                     decoration: InputDecoration(
                       labelText: 'Número',
                       border: OutlineInputBorder(
@@ -175,6 +191,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _bairroController,
                     decoration: InputDecoration(
                       labelText: 'Bairro',
                       border: OutlineInputBorder(
@@ -186,10 +203,11 @@ class _CadastroState extends State<Cadastro> {
                       }
                       return null;
                     },
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _cepController,
                     inputFormatters: [maskCep],
                     decoration: InputDecoration(
                       labelText: 'CEP',
@@ -207,6 +225,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(
@@ -224,6 +243,7 @@ class _CadastroState extends State<Cadastro> {
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
+                    controller: _senhaController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Senha',
@@ -241,9 +261,35 @@ class _CadastroState extends State<Cadastro> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
+                        String nome = _nomeController.text;
+                        String cpf = _cpfController.text;
+                        String telefone = _telefoneController.text;
+                        String rua = _ruaController.text;
+                        String numero = _numeroController.text;
+                        String bairro = _bairroController.text;
+                        String cep = _cepController.text;
+                        String email = _emailController.text;
+                        String senha = _senhaController.text;
+
+                        Usuario novoUsuario = Usuario(
+                          nome: nome,
+                          cpf: cpf,
+                          telefone: telefone,
+                          rua: rua,
+                          numero: numero,
+                          bairro: bairro,
+                          cep: cep,
+                          email: email,
+                          senha: senha,
+                        );
+
+                        UsuarioDAOImpl dao = UsuarioDAOImpl();
+                        dao.salvarUsuario(novoUsuario);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Formulário enviado com sucesso!')),
+                            content: Text('Usuário cadastrado com sucesso!'),
+                          ),
                         );
                       }
                     },
