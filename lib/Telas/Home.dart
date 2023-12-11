@@ -35,7 +35,13 @@ class _homeState extends State<home> {
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.green), // Altere para a cor desejada
-              child: Text('COMEÇAR'), // Texto do botão
+              child: Text(
+                'COMEÇAR',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ), // Texto do botão
             ),
           ],
         ),
