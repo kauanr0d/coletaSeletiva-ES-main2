@@ -89,7 +89,7 @@ class _MenuState extends State<Menu> {
                 ),
                 const SizedBox(height: 16),
                 _buildGradientButton(
-                  text: 'DENÚNCIAR',
+                  text: 'DENUNCIAR',
                   onPressed: () {
                     Navigator.push(
                       context,
