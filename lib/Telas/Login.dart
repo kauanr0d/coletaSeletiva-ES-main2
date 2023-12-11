@@ -88,7 +88,9 @@ class _LoginState extends State<Login> {
               height: 40,
               alignment: Alignment.centerRight,
               child: TextButton(
-                child: Text('Esqueceu sua Senha?', textAlign: TextAlign.right),
+                child: Text('Esqueceu sua Senha?',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(color: Colors.green, fontSize: 15.6)),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -109,14 +111,22 @@ class _LoginState extends State<Login> {
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.green), // Altere para a cor desejada
-              child: Text('ENTRAR'), // Texto do botão
+              child: Text(
+                'ENTRAR',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ), // Texto do botão
             ),
             Container(
               //container para colocar botao em "Cadastrar-se"
               height: 40,
               alignment: Alignment.center,
               child: TextButton(
-                child: Text('Cadastre-se', textAlign: TextAlign.center),
+                child: Text('Cadastre-se',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.green, fontSize: 15.6)),
                 onPressed: () {
                   Navigator.push(
                     context,

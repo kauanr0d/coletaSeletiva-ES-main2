@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_coleta_seletiva/Telas/Agendamento/TelaAgendamento.dart';
+import 'package:projeto_coleta_seletiva/Telas/ChatBot/infoChatBot.dart';
 import 'package:projeto_coleta_seletiva/Telas/Denuncia/TelaDenuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Telas/Login.dart';
 import 'package:projeto_coleta_seletiva/Telas/Meu%20Perfil/Perfil.dart';
 import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/VisualizarSolicitacoes.dart';
-import 'package:projeto_coleta_seletiva/Telas/ChatBot/ChatBot.dart';
 
 class Menu extends StatefulWidget {
   final Usuario usuario;
@@ -106,7 +106,7 @@ class _MenuState extends State<Menu> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatBot(),
+                        builder: (context) => InfoChatBot(),
                       ),
                     );
                   },
