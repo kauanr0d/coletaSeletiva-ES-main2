@@ -9,7 +9,7 @@ class ChatMessage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       child: Row(
         mainAxisAlignment:
             isBot ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -37,9 +37,7 @@ class ChatMessage extends StatelessWidget {
               ),
               child: Text(
                 text,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 16),
                 softWrap:
                     true, // Permite que o texto quebre para a próxima linha
               ),

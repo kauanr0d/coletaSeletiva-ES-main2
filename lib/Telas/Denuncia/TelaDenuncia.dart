@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/InputFormatter/CepInputFormatter.dart';
 import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
 import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
@@ -25,10 +25,14 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
 
   _TelaDenunciaState({required this.usuario});
 
+  //Salva o estado do popUp de endereço
   TextEditingController bairroController = TextEditingController();
   TextEditingController ruaController = TextEditingController();
   TextEditingController numeroController = TextEditingController();
   TextEditingController cepController = TextEditingController();
+
+  //Mascara de formatação de texto
+  var maskCep = MaskTextInputFormatter(mask: '#####-###');
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +149,8 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                     filled: true,
                     fillColor: Colors.white,
                   ),
+                  textCapitalization: TextCapitalization
+                      .sentences, // Esta linha define a capitalização para sentenças
                   validator: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Por favor, insira uma descrição';
@@ -342,6 +348,7 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
+                  textCapitalization: TextCapitalization.sentences,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 const SizedBox(
@@ -368,6 +375,7 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
+                  textCapitalization: TextCapitalization.sentences,
                   style: const TextStyle(fontSize: 18.0),
                 ),
                 const SizedBox(
@@ -408,17 +416,10 @@ class _TelaDenunciaState extends State<TelaDenuncia> {
                 TextField(
                   controller: cepController,
                   onChanged: (text) {
-                    text = text.replaceAll(' ', ''); //Remover espaços em branco
-
                     endereco.cep = text;
                   },
                   keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(
-                        8), // Limite para 9 caracteres (incluindo o hífen)
-                    CepInputFormatter(), // Formatter customizado para formatar o CEP
-                  ],
+                  inputFormatters: [maskCep],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 8.0, horizontal: 8.0),

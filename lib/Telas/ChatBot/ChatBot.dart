@@ -9,6 +9,7 @@ class ChatBot extends StatefulWidget {
 }
 
 class _ChatBotState extends State<ChatBot> {
+  final ScrollController _scrollController = ScrollController();
   final RasaService _rasaService = RasaService('http://34.95.148.245:5005');
   final List<String> _messages = [];
   final TextEditingController _textController = TextEditingController();
@@ -23,29 +24,57 @@ class _ChatBotState extends State<ChatBot> {
     setState(() {
       _messages.add('Bot: $response');
     });
+
+    // Aguarde um pequeno atraso antes de rolar para garantir que a lista seja reconstruída
+    Future.delayed(Duration(milliseconds: 100), () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
-        child: Padding(
-          padding: EdgeInsets.only(top: 5),
-          child: AppBar(
-            leadingWidth: 20,
-            title: Row(
+      appBar: AppBar(
+        title: const Text(
+          "Chat Bot",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 3,
+          ),
+        ),
+        centerTitle: true, // Centraliza o título na AppBar
+        backgroundColor:
+            Colors.transparent, // Defina a cor de fundo como transparente
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.green,
+                Color.fromARGB(255, 68, 202, 255),
+              ], // Cores do gradiente
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            // Ação quando qualquer parte do container é clicada
+            Navigator.pop(context);
+          },
+          child: Container(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: const Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Image.asset('assets/seletinhoHomePage.png',
-                      height: 45, width: 45),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                    "Seletinho",
-                    style: TextStyle(color: Colors.white),
+                Expanded(
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -57,6 +86,7 @@ class _ChatBotState extends State<ChatBot> {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[index];
@@ -77,6 +107,8 @@ class _ChatBotState extends State<ChatBot> {
                   child: TextField(
                     controller: _textController,
                     decoration: InputDecoration(hintText: "Enviar mensagem"),
+                    style: TextStyle(fontSize: 18),
+                    textCapitalization: TextCapitalization.sentences,
                   ),
                 ),
                 IconButton(

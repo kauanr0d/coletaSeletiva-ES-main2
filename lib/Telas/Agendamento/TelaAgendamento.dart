@@ -98,6 +98,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                       filled: true,
                       fillColor: Colors.white,
                     ),
+                    textCapitalization: TextCapitalization.sentences,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, insira uma descrição';
@@ -308,7 +309,6 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
   void _salvarFormulario() async {
     if (_selecaoTiposAgendamento.isNotEmpty) {
-      //TODO: Corrigir construtor de agendamento, corrigir codigo e tirar o comentario.
       final agendamento = Agendamento(
         _selecaoTiposAgendamento[0],
         _descricao.text,
