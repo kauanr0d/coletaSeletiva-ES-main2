@@ -241,7 +241,6 @@ class _TelaResetSenhaState extends State<TelaResetSenha> {
   }
 
   void _resetSenha(String email, String novaSenha, UsuarioDAOImpl usuarioDao) {
-    //TODO: Implementar codigo para mudar senha do usuario com o e-mail especifico
     usuarioDao.resetSenha(email, novaSenha);
 
     Navigator.pop(context);

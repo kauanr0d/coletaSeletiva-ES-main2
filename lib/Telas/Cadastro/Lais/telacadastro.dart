@@ -181,7 +181,7 @@ class _CadastroState extends State<Cadastro> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu Telefone';
+                        return 'Por favor, insira seu telefone';
                       }
                       return null;
                     },
@@ -201,7 +201,7 @@ class _CadastroState extends State<Cadastro> {
                     textCapitalization: TextCapitalization.sentences,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu o nome da sua Rua';
+                        return 'Por favor, insira seu o nome da sua rua';
                       }
                       return null;
                     },
@@ -232,7 +232,7 @@ class _CadastroState extends State<Cadastro> {
                     textCapitalization: TextCapitalization.sentences,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira o nome do seu Bairro';
+                        return 'Por favor, insira o nome do seu bairro';
                       }
                       return null;
                     },
@@ -260,13 +260,13 @@ class _CadastroState extends State<Cadastro> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'E-mail',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0)),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu email';
+                        return 'Por favor, insira seu e-mail';
                       }
                       return null;
                     },
@@ -298,7 +298,7 @@ class _CadastroState extends State<Cadastro> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira sua Senha';
+                        return 'Por favor, insira sua senha';
                       }
                       return null;
                     },
@@ -327,38 +327,7 @@ class _CadastroState extends State<Cadastro> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      String nome = _nomeController.text;
-                      String cpf = _cpfController.text;
-                      String telefone = _telefoneController.text;
-                      String rua = _ruaController.text;
-                      String numero = _numeroController.text;
-                      String bairro = _bairroController.text;
-                      String cep = _cepController.text;
-                      String email = _emailController.text;
-                      String senha = _senhaController.text;
-
-                      Usuario novoUsuario = Usuario(
-                        nome: nome,
-                        cpf: cpf,
-                        telefone: telefone,
-                        rua: rua,
-                        numero: numero,
-                        bairro: bairro,
-                        cep: cep,
-                        email: email,
-                        senha: senha,
-                      );
-
-                      UsuarioDAOImpl dao = UsuarioDAOImpl();
-                      dao.salvarUsuario(novoUsuario);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Usuário cadastrado com sucesso!'),
-                        ),
-                      );
-                    }
+                    verifcarInput();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors
@@ -383,5 +352,73 @@ class _CadastroState extends State<Cadastro> {
         ),
       ),
     );
+  }
+
+  verifcarInput() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      String nome = _nomeController.text;
+      String cpf = _cpfController.text;
+      String telefone = _telefoneController.text;
+      String rua = _ruaController.text;
+      String numero = _numeroController.text;
+      String bairro = _bairroController.text;
+      String cep = _cepController.text;
+      String email = _emailController.text;
+      String senha = _senhaController.text;
+
+      Usuario novoUsuario = Usuario(
+        nome: nome,
+        cpf: cpf,
+        telefone: telefone,
+        rua: rua,
+        numero: numero,
+        bairro: bairro,
+        cep: cep,
+        email: email,
+        senha: senha,
+      );
+
+      RegExp regex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+      if (!regex.hasMatch(email)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('E-mail formatado incorretamente!'),
+          ),
+        );
+
+        return;
+      }
+
+      UsuarioDAOImpl usuarioDao = UsuarioDAOImpl();
+
+      bool usuarioExiste = await usuarioDao.verificarUsuarioExistente(email);
+
+      if (usuarioExiste) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Já existe um usúario com este e-mail!'),
+          ),
+        );
+
+        return;
+      }
+
+      UsuarioDAOImpl dao = UsuarioDAOImpl();
+      dao.salvarUsuario(novoUsuario);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Usuário cadastrado com sucesso!'),
+        ),
+      );
+
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Preencha os dados corretamente!'),
+        ),
+      );
+    }
   }
 }

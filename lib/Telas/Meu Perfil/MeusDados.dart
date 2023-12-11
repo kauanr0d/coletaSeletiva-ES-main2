@@ -49,6 +49,7 @@ class MeusDados extends StatelessWidget {
         ),
       ),
       body: Container(
+        width: double.infinity, // Ocupa toda a largura da tela
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: Colors.white,

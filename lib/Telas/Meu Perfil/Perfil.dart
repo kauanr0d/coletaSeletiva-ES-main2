@@ -55,6 +55,42 @@ class _PerfilState extends State<Perfil> {
     return croppedFile;
   }
 
+  Widget _buildGradientButton(
+      {required String text, required VoidCallback onPressed}) {
+    return Container(
+      width: 300.0,
+      height: 45,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0), // Ajustado para 25
+        gradient: const LinearGradient(
+          colors: [
+            Colors.green,
+            Color.fromARGB(255, 68, 202, 255),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.transparent, // Cor do texto
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0), // Ajustado para 25
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,113 +101,116 @@ class _PerfilState extends State<Perfil> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'ID',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            GestureDetector(
-              onTap: _getImage,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 80,
-                    backgroundImage: _image != null
-                        ? FileImage(_image!)
-                        : AssetImage('assets/default_profile_image.png')
-                            as ImageProvider<Object>,
+            // Column for ID, photo, and username
+            Column(
+              children: [
+                Text(
+                  'ID',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                GestureDetector(
+                  onTap: _getImage,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 80,
+                        backgroundImage: _image != null
+                            ? FileImage(_image!)
+                            : AssetImage('assets/default_profile_image.png')
+                                as ImageProvider<Object>,
+                      ),
+                      Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
-                  Icon(
-                    Icons.edit,
-                    color: Colors.white,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  usuario.nome.toString(),
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Clique na foto para editar',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+
+            // Spacer
+            SizedBox(height: 20),
+
+            // Column for buttons
+            Padding(
+              padding: EdgeInsets.all(16.0), // Add padding here
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildGradientButton(
+                    text: 'HISTÓRICO DE SOLICITAÇÕES',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              VisualizarSolicitacoesTest(usuario: usuario),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _buildGradientButton(
+                    text: 'MEUS DADOS',
+                    onPressed: () async {
+                      Usuario? usuarioCarregado =
+                          await UsuarioDAOImpl().carregarUsuario(usuario);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MeusDados(usuario: usuarioCarregado),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _buildGradientButton(
+                    text: 'ALTERAR DADOS',
+                    onPressed: () async {
+                      Usuario? usuarioCarregado =
+                          await UsuarioDAOImpl().carregarUsuario(usuario);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AlterarDados(usuario: usuarioCarregado),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: 300.0,
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _excluirConta();
+                      },
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      child: Text(
+                        'EXCLUIR CONTA',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Clique na foto para editar',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Nome do Usuário',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        VisualizarSolicitacoesTest(usuario: usuario),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'HISTÓRICO DE SOLICITAÇÕES',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Usuario? usuarioCarregado = await UsuarioDAOImpl().carregarUsuario(
-                    usuario); // Carrega o objeto usuário com os dados atualizados
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => MeusDados(
-                        usuario:
-                            usuarioCarregado), //passando o usuario carregado
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'MEUS DADOS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Usuario? usuarioCarregado =
-                    await UsuarioDAOImpl().carregarUsuario(usuario);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        AlterarDados(usuario: usuarioCarregado),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text(
-                'ALTERAR DADOS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _excluirConta();
-              },
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.red), // Altere para a cor desejada
-              child: Text(
-                'EXCLUIR CONTA',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
               ),
             ),
           ],
