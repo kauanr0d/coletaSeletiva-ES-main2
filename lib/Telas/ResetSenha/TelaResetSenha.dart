@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
+import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/InputFormatter/CepInputFormatter.dart';
 import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
@@ -210,7 +211,7 @@ class _TelaResetSenhaState extends State<TelaResetSenha> {
     );
   }
 
-  void _vericarEmailExiste() {
+  void _vericarEmailExiste() async {
     //Verificar se o input ta correto
     //Teste para formatação do E-MAIL
     RegExp regex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
@@ -220,9 +221,13 @@ class _TelaResetSenhaState extends State<TelaResetSenha> {
       return;
     }
 
-    //TODO: Implementar codigo que verifica o banco de dados e retorna true se o email existe
+    UsuarioDAOImpl usuarioDao = UsuarioDAOImpl();
+
     if (mostrarCampoSenha == false) {
-      if (true) {
+      //Encontra o usuario com aquele email
+      bool usuarioExiste = await usuarioDao.verificarUsuarioExistente(email);
+
+      if (usuarioExiste) {
         setState(() {
           mostrarCampoSenha = true;
           textoBotao = "RESETAR SENHA";
@@ -234,15 +239,17 @@ class _TelaResetSenhaState extends State<TelaResetSenha> {
       }
     } else {
       if (senha.isNotEmpty) {
-        _resetSenha(email, senha);
+        _resetSenha(email, senha, usuarioDao);
       } else {
         popUpErroSenha();
       }
     }
   }
 
-  void _resetSenha(String email, String novaSenha) {
+  void _resetSenha(String email, String novaSenha, UsuarioDAOImpl usuarioDao) {
     //TODO: Implementar codigo para mudar senha do usuario com o e-mail especifico
+    usuarioDao.resetSenha(email, novaSenha);
+
     Navigator.pop(context);
   }
 

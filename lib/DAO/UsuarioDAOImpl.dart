@@ -89,4 +89,20 @@ class UsuarioDAOImpl implements UsuarioDAO {
       usuario.numero
     ]);
   }
+
+  //Reset de senha, primeiro verifica se existe
+  @override
+  Future<bool> verificarUsuarioExistente(String email) async {
+    var sql = "SELECT COUNT(*) FROM usuario WHERE email = ?";
+    _db = await Conexao.getConexao();
+    int count = Sqflite.firstIntValue(await _db!.rawQuery(sql, [email]))!;
+    return count > 0;
+  }
+
+  @override
+  Future<void> resetSenha(String email, String novaSenha) async {
+    var sql = "UPDATE usuario SET senha = ? WHERE email = ?";
+    _db = await Conexao.getConexao();
+    await _db!.rawUpdate(sql, [novaSenha, email]);
+  }
 }
