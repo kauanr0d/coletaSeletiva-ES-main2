@@ -72,7 +72,7 @@ class MeusDados extends StatelessWidget {
             buildInfo('Bairro:', usuario?.bairro),
             buildInfo('Rua:', usuario?.rua),
             buildInfo('Número:', usuario?.numero),
-            buildInfo('CEP:', usuario?.cep),
+            buildInfo('CEP:', usuario!.cep),
           ],
         ),
       ),

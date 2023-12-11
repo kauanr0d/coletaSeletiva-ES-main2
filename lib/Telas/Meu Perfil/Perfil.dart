@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projeto_coleta_seletiva/Controller/DeletarContaController.dart';
 import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
+import 'package:projeto_coleta_seletiva/Telas/Login.dart';
 import 'package:projeto_coleta_seletiva/Telas/Meu%20Perfil/AlterarDados.dart';
 import 'package:projeto_coleta_seletiva/Telas/Meu%20Perfil/MeusDados.dart';
 import 'package:projeto_coleta_seletiva/Telas/Solicitacoes/VisualizarSolicitacoes.dart';
@@ -158,9 +160,55 @@ class _PerfilState extends State<Perfil> {
                 ),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                _excluirConta();
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.red), // Altere para a cor desejada
+              child: Text(
+                'EXCLUIR CONTA',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  void _excluirConta() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Excluir Conta'),
+          content: Text('Tem certeza de que deseja excluir sua conta?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fechar o diálogo
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await DeletarContaController().deletarContaeDados(usuario);
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                  (route) => false, // Remover todas as rotas existentes
+                );
+              },
+              child: Text('Confirmar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

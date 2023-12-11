@@ -71,7 +71,7 @@ class Usuario {
     _cpf = obj['cpf'];
     _telefone = obj['telefone'];
     _bairro = obj['bairro'];
-    _cep = obj['cep'];
+    _cep = obj['CEP'];
     _rua = obj['rua'];
     _numero = obj['numero'];
   }
