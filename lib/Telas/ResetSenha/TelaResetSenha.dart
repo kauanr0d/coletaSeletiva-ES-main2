@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projeto_coleta_seletiva/DAO/DenunciaDAOImpl.dart';
 import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
-import 'package:projeto_coleta_seletiva/InputFormatter/CepInputFormatter.dart';
-import 'package:projeto_coleta_seletiva/Models/Denuncia.dart';
-import 'package:projeto_coleta_seletiva/Models/Usuario.dart';
-import 'package:projeto_coleta_seletiva/Models/Enums/TipoDenuncia.dart';
-import 'package:projeto_coleta_seletiva/Models/Endereco.dart';
 
 class TelaResetSenha extends StatefulWidget {
   TelaResetSenha({Key? key})
