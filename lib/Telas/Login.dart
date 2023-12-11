@@ -1,3 +1,4 @@
+import 'package:projeto_coleta_seletiva/Telas/Cadastro/Lais/telacadastro.dart';
 import 'package:projeto_coleta_seletiva/Telas/Cadastro/TelaCadastro.dart';
 import 'package:projeto_coleta_seletiva/Controller/LoginController.dart';
 import 'package:projeto_coleta_seletiva/DAO/UsuarioDAOImpl.dart';
@@ -119,7 +120,7 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TelaCadastro()),
+                    MaterialPageRoute(builder: (context) => Cadastro()),
                   );
                 },
               ),
