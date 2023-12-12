@@ -403,6 +403,20 @@ class _CadastroState extends State<Cadastro> {
         return;
       }
 
+      usuarioExiste = false;
+
+      usuarioExiste = await usuarioDao.verificarUsuarioExistenteCPF(cpf);
+
+      if (usuarioExiste) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Já existe um usúario com este cpf!'),
+          ),
+        );
+
+        return;
+      }
+
       UsuarioDAOImpl dao = UsuarioDAOImpl();
       dao.salvarUsuario(novoUsuario);
 

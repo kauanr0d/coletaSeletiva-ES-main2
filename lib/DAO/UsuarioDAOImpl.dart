@@ -112,6 +112,14 @@ class UsuarioDAOImpl implements UsuarioDAO {
   }
 
   @override
+  Future<bool> verificarUsuarioExistenteCPF(String cpf) async {
+    var sql = "SELECT COUNT(*) FROM usuario WHERE cpf = ?";
+    _db = await Conexao.getConexao();
+    int count = Sqflite.firstIntValue(await _db!.rawQuery(sql, [cpf]))!;
+    return count > 0;
+  }
+
+  @override
   Future<void> resetSenha(String email, String novaSenha) async {
     var sql = "UPDATE usuario SET senha = ? WHERE email = ?";
     _db = await Conexao.getConexao();
